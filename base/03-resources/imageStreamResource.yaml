@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: <image-stream-resource>
+  namespace: <namespace>
+  labels:
+    ci-resources: group1
+spec:
+  params:
+  - name: url
+    value:
+  type: image

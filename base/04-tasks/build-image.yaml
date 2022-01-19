@@ -1,0 +1,43 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build
+  labels:
+    ci-resources: group1
+spec:
+  params:
+    - name: TLSVERIFY
+      description: Verify the TLS on the registry endpoint
+      type: string
+      default: 'false'
+    - name: STORAGE_DRIVER
+      description: The Buildah storage STORAGE_DRIVER
+      type: string
+  resources:
+    inputs:
+      - name: source
+        type: git
+    outputs:
+      - name: intermediate-image
+        type: image
+  steps :
+    - name: build
+      command:
+        - buildah
+        - bud
+        - '--tls-verify=$(params.TLSVERIFY)'
+        - '--storage-driver=$(params.STORAGE_DRIVER)'
+        - '--root'
+        - '/files/buildah-containers'        
+        - '--layers'
+        - '-f'
+        - /files/source/dockerfile/build-src-dockerfile
+        - '-t'
+        - $(resources.outputs.intermediate-image.url)
+        - .
+      image: registry.redhat.io/rhel8/buildah@sha256:6a68ece207bc5fd8db2dd5cc2d0b53136236fb5178eb5b71eebe5d07a3c33d13
+      workingDir: /files/source      
+      resources: {}
+  workspaces:
+  - name: files
+    mountPath: /files

@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  creationTimestamp: "2020-06-26T14:11:45Z"
+  generation: 1
+  labels:
+    pipeline.openshift.io/type: kubernetes
+    ci-resources: group1
+  name: <pipeline-name>
+  namespace: <namespace>
+spec:
+  resources:
+  - name: app-source
+    type: git
+  - name: intermediate-image
+    type: image
+#  - name: runtime-image
+#    type: image
+  params:
+  - name: STORAGE_DRIVER
+    type: string
+    default: vfs
+  tasks:
+  - name: build
+    params:
+      - name: STORAGE_DRIVER
+        value: $(params.STORAGE_DRIVER)
+    resources:
+      inputs:
+      - name: source
+        resource: app-source
+      outputs:
+      - name: intermediate-image
+        resource: intermediate-image
+    taskRef:
+      kind: Task
+      name: build

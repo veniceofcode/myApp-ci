@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../base/06-pipelinerun
+patches:
+#---------------------------------------------------------------------------
+#- Patch 06-pipelinerun/pipelineRun.yaml
+#---------------------------------------------------------------------------
+- patch: |-
+    - op: remove
+      path: /metadata/name
+    - op: replace
+      path: /spec/pipelineRef/name
+      value: layers-ci-pipeline
+    - op: replace
+      path: /metadata/generateName
+      value: layers-ci-pipeline-run-
+    - op: replace
+      path: /spec/resources/0/resourceRef/name
+      value: layers-ci-source
+    - op: replace
+      path: /spec/resources/1/resourceRef/name
+      value: layers-ci-imagestreamresource
+  target:
+    group: tekton.dev
+    kind: PipelineRun
+    labelSelector: "ci-resources=group1"
+    version: v1beta1

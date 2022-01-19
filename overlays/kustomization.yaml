@@ -1,0 +1,80 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../base
+patches:
+#---------------------------------------------------------------------------
+#- Patch 01-namespace/cicd-namespace.yaml
+#---------------------------------------------------------------------------
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: layers-ci
+  target:
+    kind: Namespace
+    name: <namespace>
+    version: v1
+- patch: |-
+    - op: replace
+      path: /metadata/namespace
+      value: layers-ci
+  target:
+    labelSelector: "ci-resources=group1"
+#---------------------------------------------------------------------------
+#- Patch 02-image-streams/containerImageStream.yaml
+#---------------------------------------------------------------------------
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: layers-ci-imagestream
+  target:
+    group: image.openshift.io
+    kind: ImageStream
+    labelSelector: "ci-resources=group1"
+    version: v1
+#---------------------------------------------------------------------------
+#- Patch 03-resources/imageStreamResource.yaml
+#---------------------------------------------------------------------------
+
+# --- /metadata/name - See also /spec/resources/1/resourceRef/name in the pipelinerun file.
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: layers-ci-imagestreamresource
+    - op: add
+      path: /spec/params/0/value
+      value: image-registry.openshift-image-registry.svc:5000/layers-ci/layers-ci-imagestream
+  target:
+    group: tekton.dev
+    kind: PipelineResource
+    name: <image-stream-resource>
+    version: v1alpha1
+#---------------------------------------------------------------------------
+#- Patch 03-resources/sourceCode-GitResource.yaml
+#---------------------------------------------------------------------------
+
+# --- /metadata/name - See also /spec/resources/0/resourceRef/name in the pipelinerun file.
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: layers-ci-source
+    - op: add
+      path: /spec/params/0/value
+      value: https://github.com/marrober/layers-app.git
+  target:
+    group: tekton.dev
+    kind: PipelineResource
+    name: <source-code-app-name>
+    version: v1alpha1
+#---------------------------------------------------------------------------
+#- Patch 05-pipeline/pipeline.yaml
+#---------------------------------------------------------------------------
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: layers-ci-pipeline
+  target:
+    group: tekton.dev
+    kind: Pipeline
+    labelSelector: "ci-resources=group1"
+    version: v1beta1
