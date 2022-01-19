@@ -9,7 +9,7 @@ patches:
 - patch: |-
     - op: replace
       path: /metadata/name
-      value: layers-ci
+      value: myapp-ci
   target:
     kind: Namespace
     name: <namespace>
@@ -17,7 +17,7 @@ patches:
 - patch: |-
     - op: replace
       path: /metadata/namespace
-      value: layers-ci
+      value: myapp-ci
   target:
     labelSelector: "ci-resources=group1"
 #---------------------------------------------------------------------------
@@ -26,7 +26,7 @@ patches:
 - patch: |-
     - op: replace
       path: /metadata/name
-      value: layers-ci-imagestream
+      value: myapp-ci-imagestream
   target:
     group: image.openshift.io
     kind: ImageStream
@@ -40,10 +40,10 @@ patches:
 - patch: |-
     - op: replace
       path: /metadata/name
-      value: layers-ci-imagestreamresource
+      value: myapp-ci-imagestreamresource
     - op: add
       path: /spec/params/0/value
-      value: image-registry.openshift-image-registry.svc:5000/layers-ci/layers-ci-imagestream
+      value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-ci-imagestream
   target:
     group: tekton.dev
     kind: PipelineResource
@@ -57,10 +57,10 @@ patches:
 - patch: |-
     - op: replace
       path: /metadata/name
-      value: layers-ci-source
+      value: myapp-ci-source
     - op: add
       path: /spec/params/0/value
-      value: https://github.com/marrober/layers-app.git
+      value: https://github.com/marrober/myApp-source.git
   target:
     group: tekton.dev
     kind: PipelineResource
@@ -72,7 +72,7 @@ patches:
 - patch: |-
     - op: replace
       path: /metadata/name
-      value: layers-ci-pipeline
+      value: myapp-ci-pipeline
   target:
     group: tekton.dev
     kind: Pipeline
