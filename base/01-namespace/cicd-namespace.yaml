@@ -4,5 +4,3 @@ metadata:
   annotations:
     app.openshift.io/vcs-uri: https://github.com/marrober/layers-ci.git
   name: <namespace>
-labels:
-  ci-resources: group1
