@@ -1,8 +1,6 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  creationTimestamp: "2020-06-26T14:11:45Z"
-  generation: 1
   labels:
     pipeline.openshift.io/type: kubernetes
     ci-resources: group1
@@ -14,8 +12,6 @@ spec:
     type: git
   - name: intermediate-image
     type: image
-#  - name: runtime-image
-#    type: image
   params:
   - name: STORAGE_DRIVER
     type: string
