@@ -10,5 +10,5 @@ resources:
 - 03-image-streams/containerImageStream.yaml
 - 04-resources/imageStreamResource.yaml
 - 04-resources/sourceCode-GitResource.yaml
-- 05-tasks/build-and-deploy.yaml
+- 05-tasks/build-image.yaml
 - 06-pipeline/pipeline.yaml
