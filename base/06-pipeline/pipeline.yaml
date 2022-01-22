@@ -4,8 +4,8 @@ metadata:
   labels:
     pipeline.openshift.io/type: kubernetes
     ci-resources: group1
-  name: <pipeline-name>
-  namespace: <namespace>
+  name: myapp-ci-pipeline
+  namespace: myapp-ci
 spec:
   resources:
   - name: app-source

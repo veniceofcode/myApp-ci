@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: <source-code-app-name>
-  namespace: <namespace>
+  name: myapp-ci-source
+  namespace: myapp-ci
   labels:
     ci-resources: group1
 spec:
   params:
   - name: url
-    value:
+    value: https://github.com/marrober/myApp-source.git
   type: git

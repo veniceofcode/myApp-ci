@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: <image-stream-resource>
-  namespace: <namespace>
+  name: myapp-ci-imagestreamresource
+  namespace: myapp-ci
   labels:
     ci-resources: group1
 spec:
   params:
   - name: url
-    value:
+    value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-ci-imagestream
   type: image

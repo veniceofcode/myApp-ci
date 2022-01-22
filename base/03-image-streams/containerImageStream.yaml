@@ -1,7 +1,7 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: <image-stream>
-  namespace: <namespace>
+  name: myapp-ci-imagestream
+  namespace: myapp-ci
   labels:
     ci-resources: group1
