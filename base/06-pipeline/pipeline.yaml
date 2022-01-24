@@ -3,15 +3,14 @@ kind: Pipeline
 metadata:
   labels:
     pipeline.openshift.io/type: kubernetes
-    ci-resources: group1
   name: myapp-ci-pipeline
   namespace: myapp-ci
 spec:
   resources:
   - name: app-source
     type: git
-  - name: intermediate-image
-    type: image
+#  - name: intermediate-image
+#    type: image
   params:
   - name: STORAGE_DRIVER
     type: string

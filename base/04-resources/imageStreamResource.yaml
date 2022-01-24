@@ -3,8 +3,6 @@ kind: PipelineResource
 metadata:
   name: myapp-ci-imagestreamresource
   namespace: myapp-ci
-  labels:
-    ci-resources: group1
 spec:
   params:
   - name: url

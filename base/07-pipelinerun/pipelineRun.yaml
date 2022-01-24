@@ -2,47 +2,15 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   generateName:
-  name: <blank>
-  labels:
-    ci-resources: group1
+  name: myapp-ci-pipeline-
+  namespace: myapp-ci
 spec:
   pipelineRef:
     name:
   resources:
     - name: app-source
       resourceRef:
-        name:
-    - name: output-image
+        name: myapp-ci-source
+    - name: intermediate-image
       resourceRef:
-        name:
-  params:
-    - name: url
-      value: ""
-    - name: gitrepository_fullname
-      value: ""
-    - name: revision
-      value: ""
-    - name: commit_prior_revision
-      value: ""
-    - name: commit_ref
-      value: ""
-    - name: commit_id
-      value: ""
-    - name: commit_date
-      value: ""
-    - name: commit_message
-      value: ""
-    - name: commit_author
-      value: ""
-    - name: templateFileName
-      value: build/template/deploy-app-template.yaml
-    - name: appName
-      value: liberty-rest
-    - name: appGroup
-      value: Liberty
-    - name: quay-io-account
-      value: "marrober"
-    - name: quay-io-repository
-      value: "liberty-rest"
-    - name: quay-io-image-tag-name
-      value: "latest"
+        name:  myapp-ci-imagestreamresource
