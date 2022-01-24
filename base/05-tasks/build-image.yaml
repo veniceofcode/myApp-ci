@@ -4,8 +4,9 @@ metadata:
   name: build
   labels:
     ci-resources: group1
+  namespace: myapp-ci
 spec:
-  params:
+  params: 
     - name: TLSVERIFY
       description: Verify the TLS on the registry endpoint
       type: string
