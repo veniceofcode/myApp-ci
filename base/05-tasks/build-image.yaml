@@ -12,7 +12,7 @@ spec:
       type: string
       default: 'false'
     - name: STORAGE_DRIVER
-      description: The Buildah storage STORAGE_DRIVER
+      description: The Buildah storage STORAGE_DRIVER.
       type: string
   resources:
     inputs:
