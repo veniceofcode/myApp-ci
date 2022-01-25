@@ -7,12 +7,14 @@ spec:
   pipelineRef: 
     name: myapp-ci-pipeline
   resources:
-    - name: app-source
-      resourceRef:
-        name: myapp-ci-source
     - name: intermediate-image
       resourceRef:
         name:  myapp-ci-imagestreamresource
+  params: 
+    - name: source-git-url   
+      value: https://github.com/marrober/myApp-source.git
+    - name: source-git-revision
+      value: main
   workspaces:
   - name: files
     volumeClaimTemplate:

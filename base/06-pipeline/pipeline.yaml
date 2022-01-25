@@ -7,15 +7,36 @@ metadata:
   namespace: myapp-ci
 spec:
   resources:
-  - name: app-source
-    type: git
   - name: intermediate-image
     type: image
   params:
   - name: STORAGE_DRIVER
     type: string
     default: vfs
+  - name: source-git-url   
+    type: string
+  - name: source-git-revision
+    type: string
   tasks:
+##------------------------------------------------------------------
+# Git clone source code task
+##------------------------------------------------------------------
+  - name: git-clone-source
+    params:
+    - name: url
+      value: $(params.source-git-url)
+    - name: revision
+      value: $(params.source-git-revision)
+    - name: verbose
+      value: 'false'
+    - name: subdirectory
+      value: source
+    taskRef:
+      kind: ClusterTask
+      name:  git-clone
+    workspaces:
+    - name: output
+      workspace: files    
   - name: build
     params:
       - name: STORAGE_DRIVER
