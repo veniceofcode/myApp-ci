@@ -13,9 +13,6 @@ spec:
       description: The Buildah storage STORAGE_DRIVER.
       type: string
   resources:
-    inputs:
-      - name: source
-        type: git
     outputs:
       - name: intermediate-image
         type: image
