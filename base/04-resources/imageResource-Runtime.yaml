@@ -6,5 +6,5 @@ metadata:
 spec:
   params:
   - name: url
-    value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myApp-RuntimeResource
+    value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-runtime-resource
   type: image 
