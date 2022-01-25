@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
   name: myapp-runtime-resource
-  namespace: liberty-rest
+  namespace: myapp-ci
 spec:
   params:
   - name: url
