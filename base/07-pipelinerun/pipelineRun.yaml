@@ -4,8 +4,8 @@ metadata:
   generateName: myapp-ci-pipeline-
   namespace: myapp-ci
 spec:
-  pipelineRef:
-    name:
+  pipelineRef: 
+    name: myapp-ci-pipeline
   resources:
     - name: app-source
       resourceRef:
@@ -13,3 +13,12 @@ spec:
     - name: intermediate-image
       resourceRef:
         name:  myapp-ci-imagestreamresource
+  workspaces:
+  - name: files
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi        

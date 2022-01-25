@@ -30,3 +30,5 @@ spec:
     taskRef:
       kind: Task
       name: build
+  workspaces:
+  - name: files      
