@@ -31,7 +31,7 @@ spec:
     - name: openshift_app_name
       value: myapp-ci
     - name: runtime_image_name
-      value: myapp-ci
+      value: myapp-runtime
     - name: runtime_base_image
       # - open-liberty-base:2 - bad image
       # - openliberty:5 - good image
