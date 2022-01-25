@@ -57,14 +57,12 @@ spec:
           echo "COPY --from=intermediate-image /home/maven/target/server.xml /config/server.xml" >> ext-dockerfile.gen
           echo "LABEL github.repository.url=\"$(params.gitrepository_url)\" \\" >> ext-dockerfile.gen
           echo "github.repository.fullname=\"$(params.gitrepository_fullname)\" \\" >> ext-dockerfile.gen
-          echo "github.commit.ref=\"$(params.commit_ref)\" \\" >> ext-dockerfile.gen
+          echo "github.commit.ref=\"$(params.commit_reference_branch)\" \\" >> ext-dockerfile.gen
           echo "github.commit.id=\"$(params.sourceCommitTag)\" \\" >> ext-dockerfile.gen
-          echo "github.commit.message=\"$(params.commit_message)\" \\" >> ext-dockerfile.gen
           echo "github.commit.date=\"$(params.commit_date)\" \\" >> ext-dockerfile.gen
           echo "github.commit_author=\"$(params.commit_author)\" \\" >> ext-dockerfile.gen
           echo "pipeline.name=\"$(params.pipelineName)\" \\" >> ext-dockerfile.gen
           echo "pipeline.run=\"$(params.pipelineRunName)\" \\" >> ext-dockerfile.gen
-          echo "pipeline.task.run.name=\"$(context.taskRun.name)\"" >> ext-dockerfile.gen
           echo "------------------------------"
           cat ext-dockerfile.gen
           echo "------------------------------"
