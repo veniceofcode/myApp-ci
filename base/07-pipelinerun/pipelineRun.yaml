@@ -9,12 +9,31 @@ spec:
   resources:
     - name: intermediate-image
       resourceRef:
-        name:  myapp-ci-imagestreamresource
+        name:  myapp-ci-imagestream
   params: 
     - name: source-git-url   
       value: https://github.com/marrober/myApp-source.git
     - name: source-git-revision
       value: main
+    - name: STORAGE_DRIVER
+      value: vfs      
+    - name: gitrepository_fullname
+      value: ""
+    - name: commit_prior_revision
+      value: ""
+    - name: commit_date
+      value: ""
+    - name: commit_author
+      value: ""
+    - name: openshift_app_name
+      value: myapp-ci
+    - name: runtime_image_name
+      value: myapp-ci
+    - name: runtime_base_image
+      # - open-liberty-base:2 - bad image
+      # - openliberty:5 - good image
+      value: quay.io/marrober/open-liberty-base:2  
+#      value: quay.io/marrober/openliberty:5               
   workspaces:
   - name: files
     volumeClaimTemplate:
