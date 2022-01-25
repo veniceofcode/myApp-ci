@@ -9,7 +9,10 @@ spec:
   resources:
     - name: intermediate-image
       resourceRef:
-        name:  myapp-ci-imagestream
+        name:  myapp-ci-intermediate
+    - name: runtime-image
+      resourceRef:
+        name: myApp-RuntimeResource       
   params: 
     - name: source-git-url   
       value: https://github.com/marrober/myApp-source.git
