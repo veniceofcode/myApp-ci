@@ -74,8 +74,8 @@ spec:
     - name: IMAGE 
       value: $(params.image-url)       
     taskRef:
-      kind: ClusterTask
-      name: git-cli
+      kind: Task
+      name: update-and-commit-kustomization-file
 #    runAfter:
 #    - configure-kustomization-file      
     workspaces:
