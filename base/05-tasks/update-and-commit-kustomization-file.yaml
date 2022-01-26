@@ -47,7 +47,7 @@ spec:
 
       echo "listing directory--->"
 
-      pwd
+      echo "Current directory : " pwd
 
       ls
 
