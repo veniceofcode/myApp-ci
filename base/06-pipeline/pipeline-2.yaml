@@ -48,8 +48,29 @@ spec:
     workspaces:
     - name: files
       workspace: files  
+##------------------------------------------------------------------------
+# Git commit of the updated file
+##------------------------------------------------------------------------
+  - name: commit-updated-kustomization-file
+    params: 
+    - name: GIT_USER_NAME
+      value: "Mark Roberts"
+    - name: GIT_USER_EMAIL
+      value: "mroberts@redhat.com"
+    - name: GIT_SCRIPT
+      value: "git commit -a -m \"Update to kustomization file\"" 
+    taskRef:
+      kind: ClusterTask
+      name: git-cli
+    workspaces:
+    - name: source
+      workspace: files
+    - name: ssh-directory
+      workspace: ssh-dir
+    
 ##------------------------------------------------------------------
 # Workspace definition.
 ##------------------------------------------------------------------         
   workspaces:
   - name: files  
+  - name: ssh-creds
