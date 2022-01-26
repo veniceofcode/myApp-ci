@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: myapp-ci-pipeline-2-
+  namespace: myapp-ci
+spec:
+  pipelineRef: 
+    name: myapp-ci-pipeline-2  
+  params: 
+    - name: myapp-cd-git-url 
+      value: https://github.com/marrober/myApp-cd.git
+    - name: myapp-cd-git-revision
+      value: main
+    - name: image-url
+      value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-runtime:705c-7n29r      
+  workspaces:
+  - name: files
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi        

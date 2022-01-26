@@ -1,0 +1,53 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  labels:
+    pipeline.openshift.io/type: kubernetes
+  name: myapp-ci-pipeline-2
+  namespace: myapp-ci
+spec: 
+  params:
+  - name: myapp-cd-git-url  
+    type: string
+  - name: myapp-cd-git-revision
+    type: string
+  - name: image-url
+    type: string
+  tasks:
+##------------------------------------------------------------------
+# Git clone source code task
+##------------------------------------------------------------------
+  - name: git-clone-myapp-cd
+    params:
+    - name: url
+      value: $(params.myapp-cd-git-url)
+    - name: revision
+      value: $(params.myapp-cd-git-revision)
+    - name: verbose
+      value: 'false'
+    - name: subdirectory
+      value: myapp-cd
+    taskRef:
+      kind: ClusterTask
+      name:  git-clone
+    workspaces:
+    - name: output
+      workspace: files    
+##------------------------------------------------------------------------
+# Configure the kustomization file for the new tagged image
+##------------------------------------------------------------------------
+  - name: configure-kustimization-file
+    params: 
+    - name: image-url
+      value: $(params.image-url)
+    taskRef:
+      kind: Task
+      name: configure-kustomization-file
+    workspaces:
+    - name: files
+      workspace: files  
+##------------------------------------------------------------------
+# Workspace definition.
+##------------------------------------------------------------------         
+  workspaces:
+  - name: files  

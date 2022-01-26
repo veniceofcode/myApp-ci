@@ -1,0 +1,29 @@
+  apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: configure-kustimization-file
+  namespace: myapp-ci
+spec:
+  params:
+  - name: image-url
+    type: string
+steps:  
+  - name: configure-kustimization-file
+    script: >-
+      #!/usr/bin/env bash
+
+      set +x
+
+      ls -al
+
+      kustomize edit set image $(params.image-url)
+
+      ls -al
+
+      cat kustomization.yaml
+
+    image: quay.io/marrober/kustomize:latest
+    workingDir: /files/myapp-cd/env/overlays/01-dev     
+  workspaces:
+  - name: files
+    workspace: files   
