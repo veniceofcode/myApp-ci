@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-and-commit-kustomization-file
+  namespace: myapp-ci
+spec:
+  params:
+  - name: GIT_URL
+    type: string
+  - name: GIT_REPO_NAME
+    type: string
+  - name: GIT_USER_NAME
+    type: string
+  - name: GIT_USER_EMAIL
+    type: string
+  - name: GIT_COMMIT_COMMENT
+    type: string
+  - name: IMAGE
+    type: string
+  steps:
+  - name: update-ops-repo-with-imagetag
+    env:
+      - name: GITHOSTACCESSTOKEN
+        valueFrom:
+          secretKeyRef:
+            key: "token"
+            name: "git-host-access-token"
+    image: quay.io/marrober/kustomize:latest
+    script: >
+      #!/bin/sh
+      cd /workspace/source/
+      git config --global user.email $(params.GIT_USER_EMAIL)
+      git config --global user.name $(params.GIT_USER_NAME)
+      echo "gittoken" + ${GITHOSTACCESSTOKEN}
+      echo "git repo" + $(params.GIT_URL)
+      echo "git command: " +   https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
+      
+      git clone https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
+      # set image for dev deployment
+      echo "listing directory--->"
+      pwd
+      ls
+      cd /workspace/source/$(params.GIT_REPO_NAME)/env/overlays/01-dev
+      kustomize edit set image $(params.IMAGE)
+      cat kustomization.yaml
+      # Push back to git
+      cd /workspace/source/localgitops/$(params.GIT_REPO_NAME)
+      git add .
+      git commit -m "$(params.GIT_COMMIT_COMMENT)"
+      git push -u origin HEAD:main
+  workspaces:
+    - name: source

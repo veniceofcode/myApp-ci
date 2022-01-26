@@ -9,61 +9,75 @@ spec:
   params:
   - name: myapp-cd-git-url  
     type: string
+  - name: my-app-git-repo-name
+    type: string
   - name: myapp-cd-git-revision
     type: string
+  - name: git-commit-comment
+    type: string
   - name: image-url
+    type: string
+  - name: git-user-name
+    type: string
+  - name: git-user-email    
     type: string
   tasks:
 ##------------------------------------------------------------------
 # Git clone source code task
 ##------------------------------------------------------------------
-  - name: git-clone-myapp-cd
-    params:
-    - name: url
-      value: $(params.myapp-cd-git-url)
-    - name: revision
-      value: $(params.myapp-cd-git-revision)
-    - name: verbose
-      value: 'false'
-    - name: subdirectory
-      value: myapp-cd
-    taskRef:
-      kind: ClusterTask
-      name:  git-clone
-    workspaces:
-    - name: output
-      workspace: files    
+  #- name: git-clone-myapp-cd
+  #  params:
+  #  - name: url
+  #    value: $(params.myapp-cd-git-url)
+  #  - name: revision
+  #    value: $(params.myapp-cd-git-revision)
+  #  - name: verbose
+  #    value: 'false'
+  #  - name: subdirectory
+  #    value: myapp-cd
+  #  taskRef:
+  #    kind: ClusterTask
+  #    name:  git-clone
+  #  workspaces:
+  #  - name: output
+  #    workspace: files    
 ##------------------------------------------------------------------------
 # Configure the kustomization file for the new tagged image
 ##------------------------------------------------------------------------
-  - name: configure-kustomization-file
-    params: 
-    - name: image-url
-      value: $(params.image-url)
-    taskRef:
-      kind: Task
-      name: configure-kustomization-file
-    runAfter:
-    - git-clone-myapp-cd
-    workspaces:
-    - name: files
-      workspace: files  
+  #- name: configure-kustomization-file
+  #  params: 
+  #  - name: image-url
+  #    value: $(params.image-url)
+  #  taskRef:
+  #    kind: Task
+  #    name: configure-kustomization-file
+  #  runAfter:
+  #  - git-clone-myapp-cd
+  #  workspaces:
+  #  - name: files
+  #    workspace: files  
 ##------------------------------------------------------------------------
 # Git commit of the updated file
 ##------------------------------------------------------------------------
-  - name: commit-updated-kustomization-file
+  - name: update-and-commit-kustomization-file
     params: 
+    - name: GIT_URL
+      value: $(params.myapp-cd-git-url)
+    - name: GIT_REPO_NAME
+      value: $(params.my-app-git-repo-name)
     - name: GIT_USER_NAME
-      value: "Mark Roberts"
+      value: $(params.git-user-name)
     - name: GIT_USER_EMAIL
-      value: "mroberts@redhat.com"
-    - name: GIT_SCRIPT
-      value: "git commit -a -m \"Update to kustomization file\"" 
+      value: $(params.git-user-email)
+    - name: GIT_COMMIT_COMMENT
+      value: $(params.git-commit-comment)    
+    - name: IMAGE 
+      value: $(params.image-url)       
     taskRef:
       kind: ClusterTask
       name: git-cli
-    runAfter:
-    - configure-kustomization-file      
+#    runAfter:
+#    - configure-kustomization-file      
     workspaces:
     - name: source
       workspace: files
