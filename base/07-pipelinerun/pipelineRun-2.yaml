@@ -22,6 +22,6 @@ spec:
         resources:
           requests:
             storage: 1Gi   
-  - name: ssh-creds
+  - name: ssh-directory
     secret:
       secretName: my-ssh-credentials                 
