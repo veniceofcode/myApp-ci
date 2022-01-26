@@ -53,13 +53,23 @@ spec:
 
       cd /workspace/files/$(params.GIT_REPO_NAME)/env/overlays/01-dev
 
+      ls -al
+
+      git status
+
+      cat kustomization.yaml
+
       kustomize edit set image $(params.IMAGE)
 
       cat kustomization.yaml
 
+      ls -al
+
       # Push back to git
 
       cd /workspace/files/$(params.GIT_REPO_NAME)
+
+      git status
 
       git add .
 
