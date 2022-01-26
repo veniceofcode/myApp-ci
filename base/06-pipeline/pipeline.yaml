@@ -33,6 +33,18 @@ spec:
     type: string
   - name: runtime_base_image
     type: string 
+  - name: myapp-cd-git-url 
+    type: string
+  - name: my-app-cd-git-repo-name
+    type: string
+  - name: my-app-cd-git-repo-path-to-content-development
+    type: string
+  - name: my-app-cd-git-commit-comment
+    type: string
+  - name: my-app-cd-git-user-name
+    type: string
+  - name: my-app-cd-git-user-email    
+    type: string  
   tasks:
 ##------------------------------------------------------------------
 # Git clone source code task
@@ -119,6 +131,34 @@ spec:
     workspaces:
     - name: files
       workspace: files  
+##------------------------------------------------------------------
+# Clone the cd repository and update the kustomization file for the
+# development environment to refer to the new tagged image.
+##------------------------------------------------------------------      
+  - name: update-and-commit-kustomization-file
+    params: 
+    - name: GIT_URL
+      value: $(params.myapp-cd-git-url)
+    - name: GIT_REPO_NAME
+      value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_PATH_TO_CONTENT
+      value: $(params.my-app-cd-git-repo-path-to-content-development)
+    - name: GIT_USER_NAME
+      value: $(params.my-app-cd-git-user-name)
+    - name: GIT_USER_EMAIL
+      value: $(params.my-app-cd-git-user-email)
+    - name: GIT_COMMIT_COMMENT
+      value: $(params.my-app-cd-git-commit-comment)    
+    - name: IMAGE 
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)       
+    taskRef:
+      kind: Task
+      name: update-and-commit-kustomization-file   
+    runAfter:
+    - create-runtime-image      
+    workspaces:
+    - name: files
+      workspace: files      
 ##------------------------------------------------------------------
 # Workspace definition.
 ##------------------------------------------------------------------         

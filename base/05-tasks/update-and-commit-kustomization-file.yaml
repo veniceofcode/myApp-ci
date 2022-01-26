@@ -31,6 +31,20 @@ spec:
     script: >
       #!/bin/sh
 
+      echo $(params.GIT_URL)
+
+      echo $(params.GIT_REPO_NAME)
+
+      echo $(params.GIT_PATH_TO_CONTENT)
+
+      echo $(params.GIT_USER_NAME)
+
+      echo $(params.GIT_USER_EMAIL)
+
+      echo $(params.GIT_COMMIT_COMMENT)
+
+      echo $(params.IMAGE)
+
       cd /workspace/files/
 
       git config --global user.email $(params.GIT_USER_EMAIL)

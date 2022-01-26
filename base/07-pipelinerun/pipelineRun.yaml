@@ -36,7 +36,19 @@ spec:
       # - open-liberty-base:2 - bad image
       # - openliberty:5 - good image
       value: quay.io/marrober/open-liberty-base:2  
-#      value: quay.io/marrober/openliberty:5               
+#      value: quay.io/marrober/openliberty:5    
+    - name: myapp-cd-git-url 
+      value: marrober/myApp-cd.git
+    - name: my-app-cd-git-repo-name
+      value: myApp-cd
+    - name: my-app-cd-git-repo-path-to-content-development
+      value: env/overlays/01-dev      
+    - name: my-app-cd-git-commit-comment
+      value: "Update from ci process"
+    - name: my-app-cd-git-user-name
+      value: "Mark Roberts"
+    - name: my-app-cd-git-user-email
+      value: "mroberts@redhat.com"
   workspaces:
   - name: files
     volumeClaimTemplate:
