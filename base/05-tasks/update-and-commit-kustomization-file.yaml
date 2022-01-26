@@ -35,11 +35,11 @@ spec:
 
       git config --global user.name $(params.GIT_USER_NAME)
 
-      echo "gittoken" + ${GITHOSTACCESSTOKEN}
+      echo "gittoken : " ${GITHOSTACCESSTOKEN}
 
-      echo "git repo" + $(params.GIT_URL)
+      echo "git repo : " $(params.GIT_URL)
 
-      echo "git command: " + https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
+      echo "git command : " https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
       
       git clone https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
 
@@ -59,7 +59,7 @@ spec:
 
       # Push back to git
 
-      cd /workspace/files/localgitops/$(params.GIT_REPO_NAME)
+      cd /workspace/files/$(params.GIT_REPO_NAME)
 
       git add .
 

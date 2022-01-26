@@ -8,9 +8,9 @@ spec:
     name: myapp-ci-pipeline-2  
   params: 
     - name: myapp-cd-git-url 
-      value: https://github.com/marrober/myApp-cd.git
+      value: marrober/myApp-cd.git
     - name: my-app-git-repo-name
-      value: myApp-ci
+      value: myApp-cd
     - name: myapp-cd-git-revision
       value: main
     - name: git-commit-comment
