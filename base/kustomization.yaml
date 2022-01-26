@@ -12,6 +12,6 @@ resources:
 - 04-resources/imageResource-Runtime.yaml
 - 05-tasks/build-image.yaml
 - 05-tasks/create-runtimeImage.yaml
-- 05-tasks/configure-kustomizate-for-image.yaml
+- 05-tasks/configure-kustomize-for-image.yaml
 - 06-pipeline/pipeline.yaml
 - 06-pipeline/pipeline-2.yaml
