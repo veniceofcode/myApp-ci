@@ -11,6 +11,8 @@ spec:
     type: string
   - name: my-app-git-repo-name
     type: string
+  - name: git-repo-path-to-content
+    type: string
   - name: myapp-cd-git-revision
     type: string
   - name: git-commit-comment
@@ -22,49 +24,14 @@ spec:
   - name: git-user-email    
     type: string
   tasks:
-##------------------------------------------------------------------
-# Git clone source code task
-##------------------------------------------------------------------
-  #- name: git-clone-myapp-cd
-  #  params:
-  #  - name: url
-  #    value: $(params.myapp-cd-git-url)
-  #  - name: revision
-  #    value: $(params.myapp-cd-git-revision)
-  #  - name: verbose
-  #    value: 'false'
-  #  - name: subdirectory
-  #    value: myapp-cd
-  #  taskRef:
-  #    kind: ClusterTask
-  #    name:  git-clone
-  #  workspaces:
-  #  - name: output
-  #    workspace: files    
-##------------------------------------------------------------------------
-# Configure the kustomization file for the new tagged image
-##------------------------------------------------------------------------
-  #- name: configure-kustomization-file
-  #  params: 
-  #  - name: image-url
-  #    value: $(params.image-url)
-  #  taskRef:
-  #    kind: Task
-  #    name: configure-kustomization-file
-  #  runAfter:
-  #  - git-clone-myapp-cd
-  #  workspaces:
-  #  - name: files
-  #    workspace: files  
-##------------------------------------------------------------------------
-# Git commit of the updated file
-##------------------------------------------------------------------------
   - name: update-and-commit-kustomization-file
     params: 
     - name: GIT_URL
       value: $(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
       value: $(params.my-app-git-repo-name)
+    - name: GIT_PATH_TO_CONTENT
+      value: $(params.git-repo-path-to-content)
     - name: GIT_USER_NAME
       value: $(params.git-user-name)
     - name: GIT_USER_EMAIL
@@ -75,9 +42,7 @@ spec:
       value: $(params.image-url)       
     taskRef:
       kind: Task
-      name: update-and-commit-kustomization-file
-#    runAfter:
-#    - configure-kustomization-file      
+      name: update-and-commit-kustomization-file   
     workspaces:
     - name: files
       workspace: files

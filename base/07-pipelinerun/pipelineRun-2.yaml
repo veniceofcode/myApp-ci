@@ -11,6 +11,8 @@ spec:
       value: marrober/myApp-cd.git
     - name: my-app-git-repo-name
       value: myApp-cd
+    - name: git-repo-path-to-content
+      value: env/overlays/01-dev      
     - name: myapp-cd-git-revision
       value: main
     - name: git-commit-comment

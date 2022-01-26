@@ -9,6 +9,8 @@ spec:
     type: string
   - name: GIT_REPO_NAME
     type: string
+  - name: GIT_PATH_TO_CONTENT
+    type: string    
   - name: GIT_USER_NAME
     type: string
   - name: GIT_USER_EMAIL
