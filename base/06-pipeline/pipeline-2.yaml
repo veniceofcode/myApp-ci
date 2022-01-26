@@ -36,7 +36,7 @@ spec:
 ##------------------------------------------------------------------------
 # Configure the kustomization file for the new tagged image
 ##------------------------------------------------------------------------
-  - name: configure-kustimization-file
+  - name: configure-kustomization-file
     params: 
     - name: image-url
       value: $(params.image-url)

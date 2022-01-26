@@ -1,14 +1,14 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: configure-kustimization-file
+  name: configure-kustomization-file
   namespace: myapp-ci
 spec:
   params:
   - name: image-url
     type: string
   steps:  
-    - name: configure-kustimization-file
+    - name: configure-kustomization-file
       script: >-
         #!/usr/bin/env bash
 
