@@ -35,45 +35,75 @@ spec:
 
       git config --global user.name $(params.GIT_USER_NAME)
 
-      echo "gittoken : " ${GITHOSTACCESSTOKEN}
-
-      echo "git repo : " $(params.GIT_URL)
-
-      echo "git command : " https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
-      
       git clone https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
 
-      # set image for dev deployment
+      echo "-----------------------------------------------------------------"
 
-      echo "listing directory--->"
+      echo "view content of directory"
 
-      echo "Current directory : " pwd
-
-      ls
+      echo "-----------------------------------------------------------------"
 
       cd /workspace/files/$(params.GIT_REPO_NAME)/env/overlays/01-dev
 
       ls -al
 
+      echo "-----------------------------------------------------------------"
+
+      echo "Git status prior to making any changes"
+
+      echo "-----------------------------------------------------------------"
+
       git status
+
+      echo "-----------------------------------------------------------------"
+
+      echo "File before change"
+      
+      echo "-----------------------------------------------------------------"      
 
       cat kustomization.yaml
 
       kustomize edit set image $(params.IMAGE)
 
+      echo "-----------------------------------------------------------------"
+
+      echo "File after change"
+      
+      echo "-----------------------------------------------------------------"      
+
       cat kustomization.yaml
-
-      ls -al
-
-      # Push back to git
 
       cd /workspace/files/$(params.GIT_REPO_NAME)
 
+      echo "-----------------------------------------------------------------"
+
+      echo "Git status after change"
+      
+      echo "-----------------------------------------------------------------"      
+
       git status
+
+      echo "-----------------------------------------------------------------"
+
+      echo "Git add"
+      
+      echo "-----------------------------------------------------------------"  
 
       git add .
 
+      echo "-----------------------------------------------------------------"
+
+      echo "Git commit"
+      
+      echo "-----------------------------------------------------------------"        
+
       git commit -m "$(params.GIT_COMMIT_COMMENT)"
+
+      echo "-----------------------------------------------------------------"
+
+      echo "Git push"
+      
+      echo "-----------------------------------------------------------------"        
 
       git push -u origin HEAD:main
 
