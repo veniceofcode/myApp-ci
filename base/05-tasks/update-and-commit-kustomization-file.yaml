@@ -28,7 +28,7 @@ spec:
     image: quay.io/marrober/kustomize:latest
     script: >
       #!/bin/sh
-      cd /workspace/source/
+      cd /workspace/files/
       git config --global user.email $(params.GIT_USER_EMAIL)
       git config --global user.name $(params.GIT_USER_NAME)
       echo "gittoken" + ${GITHOSTACCESSTOKEN}
@@ -40,13 +40,13 @@ spec:
       echo "listing directory--->"
       pwd
       ls
-      cd /workspace/source/$(params.GIT_REPO_NAME)/env/overlays/01-dev
+      cd /workspace/files/$(params.GIT_REPO_NAME)/env/overlays/01-dev
       kustomize edit set image $(params.IMAGE)
       cat kustomization.yaml
       # Push back to git
-      cd /workspace/source/localgitops/$(params.GIT_REPO_NAME)
+      cd /workspace/files/localgitops/$(params.GIT_REPO_NAME)
       git add .
       git commit -m "$(params.GIT_COMMIT_COMMENT)"
       git push -u origin HEAD:main
   workspaces:
-    - name: source
+    - name: files

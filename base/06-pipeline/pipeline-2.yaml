@@ -79,14 +79,11 @@ spec:
 #    runAfter:
 #    - configure-kustomization-file      
     workspaces:
-    - name: source
+    - name: files
       workspace: files
-    - name: ssh-directory
-      workspace: ssh-directory
-    
 ##------------------------------------------------------------------
 # Workspace definition.
 ##------------------------------------------------------------------         
   workspaces:
   - name: files  
-  - name: ssh-directory
+
