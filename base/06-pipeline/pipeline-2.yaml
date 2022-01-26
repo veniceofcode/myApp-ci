@@ -62,6 +62,8 @@ spec:
     taskRef:
       kind: ClusterTask
       name: git-cli
+    runAfter:
+    - configure-kustomization-file      
     workspaces:
     - name: source
       workspace: files
