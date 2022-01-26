@@ -43,6 +43,8 @@ spec:
     taskRef:
       kind: Task
       name: configure-kustomization-file
+    runAfter:
+    - git-clone-myapp-cd
     workspaces:
     - name: files
       workspace: files  
