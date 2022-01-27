@@ -135,7 +135,7 @@ spec:
 # Clone the cd repository and update the kustomization file for the
 # development environment to refer to the new tagged image.
 ##------------------------------------------------------------------      
-  - name: update-and-commit-kustomization-file
+  - name: update-and-commit-kustomization-file-dev
     params: 
     - name: GIT_URL
       value: $(params.myapp-cd-git-url)
@@ -158,7 +158,35 @@ spec:
     - create-runtime-image      
     workspaces:
     - name: files
-      workspace: files      
+      workspace: files
+##------------------------------------------------------------------
+# Clone the cd repository and update the kustomization file for the
+# qa environment to refer to the new tagged image.
+##------------------------------------------------------------------      
+  - name: update-and-commit-kustomization-file-qa
+    params: 
+    - name: GIT_URL
+      value: $(params.myapp-cd-git-url)
+    - name: GIT_REPO_NAME
+      value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_PATH_TO_CONTENT
+      value: $(params.my-app-cd-git-repo-path-to-content-qa)
+    - name: GIT_USER_NAME
+      value: $(params.my-app-cd-git-user-name)
+    - name: GIT_USER_EMAIL
+      value: $(params.my-app-cd-git-user-email)
+    - name: GIT_COMMIT_COMMENT
+      value: $(params.my-app-cd-git-commit-comment)    
+    - name: IMAGE 
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)       
+    taskRef:
+      kind: Task
+      name: update-and-commit-kustomization-file   
+    runAfter:
+    - create-runtime-image      
+    workspaces:
+    - name: files
+      workspace: files            
 ##------------------------------------------------------------------
 # Workspace definition.
 ##------------------------------------------------------------------         
