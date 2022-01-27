@@ -13,5 +13,6 @@ resources:
 - 05-tasks/build-image.yaml
 - 05-tasks/create-runtimeImage.yaml
 - 05-tasks/update-and-commit-kustomization-file.yaml
+- 05-tasks/acs-image-build-check.yaml
 - 06-pipeline/pipeline.yaml
 - 06-pipeline/pipeline-2.yaml

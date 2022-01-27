@@ -12,41 +12,47 @@ spec:
   - name: runtime-image
     type: image    
   params:
-  - name: STORAGE_DRIVER
+  - name: STORAGE_DRIVER            # Used for the build step to tell Buildah how to store images
     type: string
     default: vfs
-  - name: source-git-url   
+  - name: source-git-url            # Application source code git url
     type: string
-  - name: source-git-revision
+  - name: source-git-revision       # Application source code git branch or tag
     type: string
-  - name: gitrepository_fullname
+  - name: gitrepository_fullname    # Application source code git repository full name
     type: string
-  - name: commit_prior_revision
+  - name: commit_prior_revision     # Application source code git commit id (most recent commit) - Only used when triggered by a Tekton trigger
     type: string
-  - name: commit_date
+  - name: commit_date               # Application source code git commit date - Only used when triggered by a Tekton trigger
     type: string
-  - name: commit_author
+  - name: commit_author             # Application source code git commit author - Only used when triggered by a Tekton trigger
     type: string    
-  - name: openshift_app_name
+  - name: openshift_app_name        # OpenShift project name
     type: string
-  - name: runtime_image_name
+  - name: runtime_image_name        # OpenShift imagestream name
     type: string
-  - name: runtime_base_image
+  - name: runtime_base_image        # Input base image into which the build jar file is injected
     type: string 
-  - name: myapp-cd-git-url 
+  - name: myapp-cd-git-url          # Continuous delivery git repository url
     type: string
-  - name: my-app-cd-git-repo-name
+  - name: my-app-cd-git-repo-name   # Continuous delivery git repository name
     type: string
-  - name: my-app-cd-git-repo-path-to-content-development
+  - name: my-app-cd-git-repo-path-to-content-development    # Path to the development assets in the continuous delivery git repository
     type: string
-  - name: my-app-cd-git-repo-path-to-content-qa
+  - name: my-app-cd-git-repo-path-to-content-qa             # Path to the qa assets in the continuous delivery git repository
     type: string
-  - name: my-app-cd-git-commit-comment
+  - name: my-app-cd-git-commit-comment  # Comment to be applied to the cd git commit when updating the Kustomize files
     type: string
-  - name: my-app-cd-git-user-name
+  - name: my-app-cd-git-user-name       # Continuous delivery git repository update user - username
     type: string
-  - name: my-app-cd-git-user-email    
+  - name: my-app-cd-git-user-email      # Continuous delivery git repository update user - email 
     type: string  
+  - name: acs_central_endpoint          # Advanced Cluster Security endpoint
+    type: string
+  - name: acs_api_token                 # Advanced Cluster Security access token secret
+    type: string
+  - name: roxctl-output-format          # Advanced Cluster Security image scan output format
+    type: string    
   tasks:
 ##------------------------------------------------------------------
 # Git clone source code task
@@ -162,6 +168,27 @@ spec:
     - name: files
       workspace: files
 ##------------------------------------------------------------------
+# Perform image build check
+##------------------------------------------------------------------
+  - name: image-build-check
+    params:
+    - name: acs_central_endpoint
+      value: $(params.acs_central_endpoint)
+    - name: acs_api_token
+      value: $(params.acs_api_token)
+    - name: public-url
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)
+    - name: roxctl-output-format
+      value: $(params.roxctl-output-format)        
+    taskRef:
+      kind: Task
+      name: acs-image-build-check    
+    runAfter:
+    - create-runtime-image
+    workspaces:
+    - name: files
+      workspace: files     
+##------------------------------------------------------------------
 # Clone the cd repository and update the kustomization file for the
 # qa environment to refer to the new tagged image.
 ##------------------------------------------------------------------      
@@ -186,6 +213,11 @@ spec:
       name: update-and-commit-kustomization-file   
     runAfter:
     - create-runtime-image      
+    when:
+    - input: "$(tasks.image-build-check.results.scan-result)"
+      operator: in
+      values:
+      - "pass"    
     workspaces:
     - name: files
       workspace: files            
