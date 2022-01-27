@@ -42,7 +42,7 @@ spec:
     - name: my-app-cd-git-repo-name
       value: myApp-cd
     - name: my-app-cd-git-repo-path-to-content-development
-      value: env/overlays/01-dev      
+      value: env/01-dev      
     - name: my-app-cd-git-commit-comment
       value: "Update from ci process"
     - name: my-app-cd-git-user-name

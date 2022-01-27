@@ -59,7 +59,7 @@ spec:
 
       echo "-----------------------------------------------------------------"
 
-      cd /workspace/files/$(params.GIT_REPO_NAME)/env/overlays/01-dev
+      cd /workspace/files/$(params.GIT_REPO_NAME)/$(params.GIT_PATH_TO_CONTENT)
 
       ls -al
 
