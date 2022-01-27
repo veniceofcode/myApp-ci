@@ -39,6 +39,8 @@ spec:
     type: string
   - name: my-app-cd-git-repo-path-to-content-development
     type: string
+  - name: my-app-cd-git-repo-path-to-content-qa
+    type: string
   - name: my-app-cd-git-commit-comment
     type: string
   - name: my-app-cd-git-user-name
