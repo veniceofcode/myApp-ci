@@ -28,9 +28,7 @@ spec:
       value: $(params.roxctl-output-format)        
     taskRef:
       kind: Task
-      name: acs-image-build-check    
-    runAfter:
-    - create-runtime-image    
+      name: acs-image-build-check       
 ##------------------------------------------------------------------
 # Workspace definition.
 ##------------------------------------------------------------------         
