@@ -18,7 +18,7 @@ spec:
     - name: git-commit-comment
       value: "Update from ci process"
     - name: image-url
-      value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-runtime:705c-7n29r      
+      value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-runtime:705c-7gzr7     
     - name: git-user-name
       value: "Mark Roberts"
     - name: git-user-email
