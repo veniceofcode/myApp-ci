@@ -1,0 +1,54 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  labels:
+    pipeline.openshift.io/type: kubernetes
+  name: myapp-ci-pipeline-2
+  namespace: myapp-ci
+spec: 
+  params:
+  - name: myapp-cd-git-url  
+    type: string
+  - name: my-app-git-repo-name
+    type: string
+  - name: git-repo-path-to-content
+    type: string
+  - name: myapp-cd-git-revision
+    type: string
+  - name: git-commit-comment
+    type: string
+  - name: image-url
+    type: string
+  - name: git-user-name
+    type: string
+  - name: git-user-email    
+    type: string
+  tasks:
+  - name: update-and-commit-kustomization-file
+    params: 
+    - name: GIT_URL
+      value: $(params.myapp-cd-git-url)
+    - name: GIT_REPO_NAME
+      value: $(params.my-app-git-repo-name)
+    - name: GIT_PATH_TO_CONTENT
+      value: $(params.git-repo-path-to-content)
+    - name: GIT_USER_NAME
+      value: $(params.git-user-name)
+    - name: GIT_USER_EMAIL
+      value: $(params.git-user-email)
+    - name: GIT_COMMIT_COMMENT
+      value: $(params.git-commit-comment)    
+    - name: IMAGE 
+      value: $(params.image-url)       
+    taskRef:
+      kind: Task
+      name: update-and-commit-kustomization-file   
+    workspaces:
+    - name: files
+      workspace: files
+##------------------------------------------------------------------
+# Workspace definition.
+##------------------------------------------------------------------         
+  workspaces:
+  - name: files  
+

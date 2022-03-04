@@ -184,7 +184,10 @@ spec:
       kind: Task
       name: acs-image-build-check    
     runAfter:
-    - create-runtime-image  
+    - create-runtime-image
+    workspaces:
+    - name: files
+      workspace: files     
 ##------------------------------------------------------------------
 # Clone the cd repository and update the kustomization file for the
 # qa environment to refer to the new tagged image.
