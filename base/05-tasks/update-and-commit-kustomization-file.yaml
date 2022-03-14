@@ -129,7 +129,7 @@ spec:
       
       echo "-----------------------------------------------------------------"        
 
-      git push -u origin HEAD:main
+      git push -u
 
   workspaces:
     - name: files
