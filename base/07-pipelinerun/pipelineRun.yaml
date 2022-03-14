@@ -44,9 +44,13 @@ spec:
     - name: my-app-cd-git-repo-path-to-content-development
       value: env/01-dev      
     - name: my-app-cd-git-repo-path-to-content-qa
-      value: env/02-qa        
-    - name: my-app-cd-git-commit-comment
-      value: "Update from ci process"
+      value: env/02-qa     
+    - name: my-app-cd-git-repo-branch-qa
+      value: "qa-ready"   
+    - name: my-app-cd-git-commit-comment-dev
+      value: "Update from ci process - dev"
+    - name: my-app-cd-git-commit-comment-qa
+      value: "Update from ci process - qa"          
     - name: my-app-cd-git-user-name
       value: "Mark Roberts"
     - name: my-app-cd-git-user-email

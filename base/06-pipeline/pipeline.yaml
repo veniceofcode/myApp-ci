@@ -41,8 +41,12 @@ spec:
     type: string
   - name: my-app-cd-git-repo-path-to-content-qa             # Path to the qa assets in the continuous delivery git repository
     type: string
-  - name: my-app-cd-git-commit-comment  # Comment to be applied to the cd git commit when updating the Kustomize files
+  - name: my-app-cd-git-commit-comment-dev  # Comment to be applied to the cd git commit when updating the Kustomize files
     type: string
+  - name: my-app-cd-git-commit-comment-qa  # Comment to be applied to the cd git commit when updating the Kustomize files
+    type: string    
+  - name: my-app-cd-git-repo-branch-qa  # Branch for commit of kustomization change for QA updates
+    type: string   
   - name: my-app-cd-git-user-name       # Continuous delivery git repository update user - username
     type: string
   - name: my-app-cd-git-user-email      # Continuous delivery git repository update user - email 
@@ -149,6 +153,8 @@ spec:
       value: $(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
       value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_BRANCH
+      value: "main"
     - name: GIT_PATH_TO_CONTENT
       value: $(params.my-app-cd-git-repo-path-to-content-development)
     - name: GIT_USER_NAME
@@ -156,7 +162,7 @@ spec:
     - name: GIT_USER_EMAIL
       value: $(params.my-app-cd-git-user-email)
     - name: GIT_COMMIT_COMMENT
-      value: $(params.my-app-cd-git-commit-comment)    
+      value: $(params.my-app-cd-git-commit-comment-dev)    
     - name: IMAGE 
       value: $(tasks.create-runtime-image.results.new-image-repo-location)       
     taskRef:
@@ -195,6 +201,8 @@ spec:
       value: $(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
       value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_BRANCH
+      value: $(params.my-app-cd-git-repo-branch-qa)
     - name: GIT_PATH_TO_CONTENT
       value: $(params.my-app-cd-git-repo-path-to-content-qa)
     - name: GIT_USER_NAME
@@ -202,7 +210,7 @@ spec:
     - name: GIT_USER_EMAIL
       value: $(params.my-app-cd-git-user-email)
     - name: GIT_COMMIT_COMMENT
-      value: $(params.my-app-cd-git-commit-comment)    
+      value: $(params.my-app-cd-git-commit-comment-qa)    
     - name: IMAGE 
       value: $(tasks.create-runtime-image.results.new-image-repo-location)       
     taskRef:
