@@ -11,8 +11,13 @@ spec:
     type: string
   - name: GIT_BRANCH
     type: string
+    default: ""
+  - name: GIT_PR_TARGET_BRANCH
+    type: string
+    default: ""
   - name: GIT_PATH_TO_CONTENT
     type: string    
+    default: ""
   - name: GIT_USER_NAME
     type: string
   - name: GIT_USER_EMAIL
@@ -33,19 +38,23 @@ spec:
     script: >
       #!/bin/sh
 
-      echo $(params.GIT_URL)
+      echo "Git URL : " $(params.GIT_URL)
 
-      echo $(params.GIT_REPO_NAME)
+      echo "Git Repo name : " $(params.GIT_REPO_NAME)
 
-      echo $(params.GIT_PATH_TO_CONTENT)
+      echo "Git branch for change : " $(params.GIT_BRANCH)
 
-      echo $(params.GIT_USER_NAME)
+      echo "Git branch target for pull request : " $(params.GIT_PR_TARGET_BRANCH)
 
-      echo $(params.GIT_USER_EMAIL)
+      echo "Path to content in git repo : " $(params.GIT_PATH_TO_CONTENT)
 
-      echo $(params.GIT_COMMIT_COMMENT)
+      echo "Username for git changes : " $(params.GIT_USER_NAME)
 
-      echo $(params.IMAGE)
+      echo "Email address for git changes : " $(params.GIT_USER_EMAIL)
+
+      echo "Git commit comment : " $(params.GIT_COMMIT_COMMENT)
+
+      echo "Image URL to be patched : " $(params.IMAGE)
 
       cd /workspace/files/
 
@@ -130,6 +139,22 @@ spec:
       echo "-----------------------------------------------------------------"        
 
       git push -u
+
+      if [ -z "$params(GIT_BRANCH" ] then
+
+        echo "Pull request is not required"
+
+      else
+
+        echo "-----------------------------------------------------------------"
+
+        echo "Create pull request"
+
+        echo "-----------------------------------------------------------------"
+
+        gh pr create --fill --head $(params.GIT_BRANCH) --base $(params.GIT_PR_TARGET_BRANCH)
+      
+      fi
 
   workspaces:
     - name: files

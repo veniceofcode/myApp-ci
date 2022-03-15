@@ -43,19 +43,21 @@ spec:
     type: string
   - name: my-app-cd-git-commit-comment-dev  # Comment to be applied to the cd git commit when updating the Kustomize files
     type: string
-  - name: my-app-cd-git-commit-comment-qa  # Comment to be applied to the cd git commit when updating the Kustomize files
+  - name: my-app-cd-git-commit-comment-qa   # Comment to be applied to the cd git commit when updating the Kustomize files
     type: string    
-  - name: my-app-cd-git-repo-branch-qa  # Branch for commit of kustomization change for QA updates
+  - name: my-app-cd-git-repo-branch-qa      # Branch for commit of kustomization change for QA updates
     type: string   
-  - name: my-app-cd-git-user-name       # Continuous delivery git repository update user - username
+  - name: my-app-cd-git-target-branch-pr    # Target branch for a pull request to merge changes from an environment specific 'feature' branch
     type: string
-  - name: my-app-cd-git-user-email      # Continuous delivery git repository update user - email 
+  - name: my-app-cd-git-user-name           # Continuous delivery git repository update user - username
+    type: string
+  - name: my-app-cd-git-user-email          # Continuous delivery git repository update user - email 
     type: string  
-  - name: acs_central_endpoint          # Advanced Cluster Security endpoint
+  - name: acs_central_endpoint              # Advanced Cluster Security endpoint
     type: string
-  - name: acs_api_token                 # Advanced Cluster Security access token secret
+  - name: acs_api_token                     # Advanced Cluster Security access token secret
     type: string
-  - name: roxctl-output-format          # Advanced Cluster Security image scan output format
+  - name: roxctl-output-format              # Advanced Cluster Security image scan output format
     type: string    
   tasks:
 ##------------------------------------------------------------------
@@ -203,6 +205,8 @@ spec:
       value: $(params.my-app-cd-git-repo-name)
     - name: GIT_BRANCH
       value: $(params.my-app-cd-git-repo-branch-qa)
+    - name: GIT_PR_TARGEET_BRANCH
+      value: $(params.my-app-cd-git-target-branch-pr)
     - name: GIT_PATH_TO_CONTENT
       value: $(params.my-app-cd-git-repo-path-to-content-qa)
     - name: GIT_USER_NAME

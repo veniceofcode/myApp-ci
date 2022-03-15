@@ -47,6 +47,8 @@ spec:
       value: env/02-qa     
     - name: my-app-cd-git-repo-branch-qa
       value: "qa-ready"   
+    - name: my-app-cd-git-target-branch-pr 
+      value: "main"
     - name: my-app-cd-git-commit-comment-dev
       value: "Update from ci process - dev"
     - name: my-app-cd-git-commit-comment-qa
