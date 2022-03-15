@@ -140,7 +140,7 @@ spec:
 
       git push -u
 
-      if [ -z "$params(GIT_BRANCH)" ] 
+      if [ -z "$(params.GIT_BRANCH)" ] 
       
       then
 
@@ -153,6 +153,10 @@ spec:
         echo "Create pull request"
 
         echo "-----------------------------------------------------------------"
+
+        echo $GITHOSTACCESSTOKEN > gh-token.txt
+
+        gh auth login --with-token < gh-token.txt
 
         gh pr create --fill --head $(params.GIT_BRANCH) --base $(params.GIT_PR_TARGET_BRANCH)
       
