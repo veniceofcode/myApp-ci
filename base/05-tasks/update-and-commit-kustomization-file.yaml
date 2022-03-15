@@ -33,7 +33,7 @@ spec:
         valueFrom:
           secretKeyRef:
             key: "token"
-            name: "git-host-access-token"
+            name: "github-access-token"
     image: quay.io/marrober/kustomize:latest
     script: >
       #!/bin/sh
