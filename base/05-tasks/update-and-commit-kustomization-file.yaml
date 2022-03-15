@@ -140,7 +140,8 @@ spec:
 
       git push -u
 
-      if [ -z "$params(GIT_BRANCH" ] 
+      if [ -z "$params(GIT_BRANCH)" ] 
+      
       then
 
         echo "Pull request is not required"
