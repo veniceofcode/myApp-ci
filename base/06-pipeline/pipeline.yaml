@@ -205,7 +205,7 @@ spec:
       value: $(params.my-app-cd-git-repo-name)
     - name: GIT_BRANCH
       value: $(params.my-app-cd-git-repo-branch-qa)
-    - name: GIT_PR_TARGEET_BRANCH
+    - name: GIT_PR_TARGET_BRANCH
       value: $(params.my-app-cd-git-target-branch-pr)
     - name: GIT_PATH_TO_CONTENT
       value: $(params.my-app-cd-git-repo-path-to-content-qa)
