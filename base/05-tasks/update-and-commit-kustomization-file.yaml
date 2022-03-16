@@ -126,6 +126,8 @@ spec:
 
         gh auth login --with-token < gh-token.txt
 
+        rm -rf gh-token.txt
+
         gh pr create --fill --head $(params.GIT_BRANCH) --base $(params.GIT_PR_TARGET_BRANCH)
       
       fi
