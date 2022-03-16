@@ -62,6 +62,8 @@ spec:
 
       git config --global user.name $(params.GIT_USER_NAME)
 
+      ls -alr
+
       git clone https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
 
       echo "-----------------------------------------------------------------"
