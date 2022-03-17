@@ -58,7 +58,11 @@ spec:
 
       echo "Image URL to be patched : " $(params.IMAGE)
 
-      cd /workspace/files/$(params.LOCATION)
+      cd /workspace/files
+
+      mkdir $(params.LOCATION)
+
+      cd $(params.LOCATION)
 
       git config --global user.email $(params.GIT_USER_EMAIL)
 
