@@ -166,7 +166,9 @@ spec:
     - name: GIT_COMMIT_COMMENT
       value: $(params.my-app-cd-git-commit-comment-dev)    
     - name: IMAGE 
-      value: $(tasks.create-runtime-image.results.new-image-repo-location)       
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)     
+    - name: LOCATION
+      value: "dev" 
     taskRef:
       kind: Task
       name: update-and-commit-kustomization-file   
@@ -216,7 +218,9 @@ spec:
     - name: GIT_COMMIT_COMMENT
       value: $(params.my-app-cd-git-commit-comment-qa)    
     - name: IMAGE 
-      value: $(tasks.create-runtime-image.results.new-image-repo-location)       
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)   
+    - name: LOCATION
+      value: "qa"           
     taskRef:
       kind: Task
       name: update-and-commit-kustomization-file   

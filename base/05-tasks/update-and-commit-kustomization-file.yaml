@@ -26,6 +26,8 @@ spec:
     type: string
   - name: IMAGE
     type: string
+  - name: LOCATION
+    type: string
   steps:
   - name: update-ops-repo-with-imagetag
     env:
@@ -56,7 +58,7 @@ spec:
 
       echo "Image URL to be patched : " $(params.IMAGE)
 
-      cd /workspace/files/
+      cd /workspace/files/$(params.LOCATION)
 
       git config --global user.email $(params.GIT_USER_EMAIL)
 
@@ -72,7 +74,7 @@ spec:
 
       echo "-----------------------------------------------------------------"
 
-      cd /workspace/files/$(params.GIT_REPO_NAME)/$(params.GIT_PATH_TO_CONTENT)
+      cd /workspace/files/$(params.LOCATION)/$(params.GIT_REPO_NAME)/$(params.GIT_PATH_TO_CONTENT)
 
       ls -al
 
@@ -100,7 +102,7 @@ spec:
 
       cat kustomization.yaml
 
-      cd /workspace/files/$(params.GIT_REPO_NAME)
+      cd /workspace/files/$(params.LOCATION)/$(params.GIT_REPO_NAME)
 
       git add .    
 
