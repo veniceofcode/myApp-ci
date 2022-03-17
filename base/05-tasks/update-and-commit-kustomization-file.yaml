@@ -64,11 +64,13 @@ spec:
 
       cd $(params.LOCATION)
 
+      pwd
+
       git config --global user.email $(params.GIT_USER_EMAIL)
 
       git config --global user.name $(params.GIT_USER_NAME)
 
-      ls -alr
+      ls -alR
 
       git clone https://${GITHOSTACCESSTOKEN}@github.com/$(params.GIT_URL)
 
