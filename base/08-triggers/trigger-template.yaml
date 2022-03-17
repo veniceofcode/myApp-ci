@@ -1,0 +1,85 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: myapp-trigger-pipeline-template
+spec:
+  params:
+  - name: gitrepository.url
+  - name: gitrepository.fullname
+  - name: gitrevision
+  - name: commit.prior_revision
+  - name: commit.ref
+  - name: commit.id
+  - name: commit.date
+  - name: commit.message
+  - name: commit.author
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: myapp-run-pr-tr-
+    spec:
+      serviceAccountName: pipeline
+      pipelineRef:
+        name: myapp-ci-pipeline
+      resources:
+        - name: intermediate-image
+          resourceRef:
+            name: myapp-ci-intermediate
+        - name: runtime-image
+          resourceRef:
+            name: myapp-runtime
+      params:
+        - name: STORAGE_DRIVER
+          value: vfs      
+        - name: runtime_image_name
+          value: myapp-runtime
+        - name: runtime_base_image
+          # - open-liberty-base:2 - bad image
+          # - openliberty:10 - good image
+    #      value: quay.io/marrober/open-liberty-base:2  
+          value: quay.io/marrober/openliberty:latest  
+        - name: myapp-cd-git-url 
+          value: marrober/myApp-cd.git
+        - name: my-app-cd-git-repo-name
+          value: myApp-cd
+        - name: my-app-cd-git-repo-path-to-content-development
+          value: env/01-dev      
+        - name: my-app-cd-git-repo-path-to-content-qa
+          value: env/02-qa     
+        - name: my-app-cd-git-repo-branch-qa
+          value: "qa-ready"   
+        - name: my-app-cd-git-target-branch-pr 
+          value: "main"
+        - name: my-app-cd-git-commit-comment-dev
+          value: "Update from ci process - dev"
+        - name: my-app-cd-git-commit-comment-qa
+          value: "Update from ci process - qa"          
+        - name: my-app-cd-git-user-name
+          value: "Mark Roberts"
+        - name: my-app-cd-git-user-email
+          value: "mroberts@redhat.com"
+        - name: acs_central_endpoint
+          value: acs-secret
+        - name: acs_api_token
+          value: acs-secret
+        - name: roxctl-output-format
+          value: "table"               
+        - name: source-git-url
+          value: $(tt.params.gitrepository.url)
+        - name: gitrepository_fullname
+          value: $(tt.params.gitrepository.fullname)
+        - name: source-git-revision
+          value: $(tt.params.gitrevision)
+        - name: commit_prior_revision
+          value: $(tt.params.commit.prior_revision)
+        - name: commit_ref
+          value: $(tt.params.commit.ref)
+        - name: commit_id
+          value: $(tt.params.commit.id)
+        - name: commit_date
+          value: $(tt.params.commit.date)
+        - name: commit_message
+          value: $(tt.params.commit.message)
+        - name: commit_author
+          value: $(tt.params.commit.author)

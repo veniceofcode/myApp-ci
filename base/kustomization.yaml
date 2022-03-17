@@ -16,3 +16,8 @@ resources:
 - 05-tasks/acs-image-build-check.yaml
 - 06-pipeline/pipeline.yaml
 - 06-pipeline/pipeline-2.yaml
+- 08-triggers/event-listener.yaml
+- 08-triggers/event-listenter-route.yaml
+- 08-triggers/trigger-binding.yaml
+- 08-triggers/trigger-template.yaml
+
