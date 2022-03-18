@@ -11,7 +11,7 @@ spec:
       value: https://github.com/marrober/myApp-cd.git
     - name: resource-git-revision
       value: main
-    - name: resource-git-revision
+    - name: deployment-asset-subdir
       value: env/02-qa
     - name: acs_central_endpoint
       value: acs-secret

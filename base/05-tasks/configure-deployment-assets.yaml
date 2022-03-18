@@ -18,14 +18,16 @@ spec:
         set +x
 
         ls -al
+        
+        echo "--------------------------------------------------------------------"
+        echo " Kustomization file "
+        echo "--------------------------------------------------------------------"
 
         cat kustomization.yaml
 
         kustomize build         
 
         kustomize build > configured-deployment.yaml
-
-        cat configured-deployment.yaml
 
         mkdir output
 
