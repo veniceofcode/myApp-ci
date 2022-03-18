@@ -31,7 +31,9 @@ spec:
             name: myapp-runtime
       params:
         - name: STORAGE_DRIVER
-          value: vfs      
+          value: vfs   
+        - name: openshift_app_name
+          value: myapp-ci   
         - name: runtime_image_name
           value: myapp-runtime
         - name: runtime_base_image
