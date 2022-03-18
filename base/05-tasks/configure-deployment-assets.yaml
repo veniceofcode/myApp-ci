@@ -20,16 +20,31 @@ spec:
         ls -al
         
         echo "--------------------------------------------------------------------"
+
         echo " Kustomization file "
+
         echo "--------------------------------------------------------------------"
 
         cat kustomization.yaml
 
-        kustomize build         
+        kustomize build  
+
+        echo "--------------------------------------------------------------------"
+
+        echo " Processed content "
+        
+        echo "--------------------------------------------------------------------"       
 
         kustomize build > configured-deployment.yaml
 
         mkdir output
+
+        echo "--------------------------------------------------------------------"
+
+        echo " Split into individual files for analysis "
+        
+        echo "--------------------------------------------------------------------"     
+
 
         kubectl-slice -f configured-deployment.yaml -o ./output
 

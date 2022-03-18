@@ -69,19 +69,19 @@ spec:
 
         do
 
-         var=$(grep "apiVersion: route.openshift.io" "$file")
+         #var=$(grep "apiVersion: route.openshift.io" "$file")
 
-          result1=$?
+          #result1=$?
 
-          var=$(grep "kustomize.config.k8s.io" "$file")
+          #var=$(grep "kustomize.config.k8s.io" "$file")
 
-          result2=$?
+          #result2=$?
 
-          if [ $result1 == "0" ] || [ $result2 == "0" ] ; then
+          #if [ $result1 == "0" ] || [ $result2 == "0" ] ; then
 
-            echo "."
+            #echo "."
 
-          else
+          #else
 
             echo "Deployment check on file : $file"
 
@@ -97,7 +97,7 @@ spec:
               failTask=true
             fi
 
-          fi
+          #fi
         done
 
         if [[ "$failTask" == "true" ]]; then
