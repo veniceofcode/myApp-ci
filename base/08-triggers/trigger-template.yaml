@@ -85,3 +85,12 @@ spec:
           value: $(tt.params.commit.message)
         - name: commit_author
           value: $(tt.params.commit.author)
+      workspaces:
+      - name: files
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 20Gi  
