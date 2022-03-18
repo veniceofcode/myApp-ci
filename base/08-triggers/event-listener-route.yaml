@@ -9,4 +9,4 @@ spec:
     targetPort: http-listener
   to:
     kind: Service
-    name: myapp-rest-github-listener
+    name: el-myapp-github-listener
