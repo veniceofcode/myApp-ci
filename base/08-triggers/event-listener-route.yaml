@@ -6,7 +6,7 @@ metadata:
   name: myapp-github-listener-el
 spec:
   port:
-    targetPort: http-listener
+    targetPort: listener
   to:
     kind: Service
     name: myapp-rest-github-listener
