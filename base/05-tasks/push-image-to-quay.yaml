@@ -52,7 +52,7 @@ spec:
         - name: quay-auth-secret
           mountPath: /etc/secret-volume
           readOnly: true
-   - name: get-quay-repository-url
+    - name: get-quay-repository-url
       command:
         - /bin/sh
         - '-c'
