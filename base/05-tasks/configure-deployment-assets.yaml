@@ -1,0 +1,58 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: configure-deployment-assets
+spec:
+  params: 
+    - name: subdirectory
+      description: location of deployment assets in the workspace
+      type: string
+  steps:
+##------------------------------------------------------------------------
+# Configure the deployment yaml file to use the container image just built
+##------------------------------------------------------------------------
+    - name: configure-deployment-assets
+      script: >-
+        #!/usr/bin/env bash
+
+        set +x
+
+        ls -al
+        
+        echo "--------------------------------------------------------------------"
+
+        echo " Kustomization file "
+
+        echo "--------------------------------------------------------------------"
+
+        cat kustomization.yaml
+
+        kustomize build  
+
+        echo "--------------------------------------------------------------------"
+
+        echo " Processed content "
+        
+        echo "--------------------------------------------------------------------"       
+
+        kustomize build > configured-deployment.yaml
+
+        mkdir output
+
+        echo "--------------------------------------------------------------------"
+
+        echo " Split into individual files for analysis "
+        
+        echo "--------------------------------------------------------------------"     
+
+
+        kubectl-slice -f configured-deployment.yaml -o ./output
+
+        ls -al ./output
+
+      image: quay.io/marrober/kustomize:latest
+      workingDir: /files/resources/$(params.subdirectory)
+
+  workspaces:
+  - name: files
+    mountPath: /files

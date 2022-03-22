@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: myapp-trigger-pipeline-template
+  name: myapp-ci-trigger-pipeline-template
 spec:
   params:
   - name: gitrepository.url
@@ -17,7 +17,7 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      generateName: myapp-run-pr-tr-
+      generateName: myapp-ci-tr-
     spec:
       serviceAccountName: pipeline
       pipelineRef:
@@ -31,7 +31,9 @@ spec:
             name: myapp-runtime
       params:
         - name: STORAGE_DRIVER
-          value: vfs      
+          value: vfs   
+        - name: openshift_app_name
+          value: myapp-ci   
         - name: runtime_image_name
           value: myapp-runtime
         - name: runtime_base_image
@@ -83,3 +85,12 @@ spec:
           value: $(tt.params.commit.message)
         - name: commit_author
           value: $(tt.params.commit.author)
+      workspaces:
+      - name: files
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 20Gi  

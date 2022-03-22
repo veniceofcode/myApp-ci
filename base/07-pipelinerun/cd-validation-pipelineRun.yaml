@@ -1,20 +1,26 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: myapp-ci-pipeline-2-
+  generateName: myapp-cd-validation-
   namespace: myapp-ci
 spec:
   pipelineRef: 
-    name: myapp-ci-pipeline-2  
+    name: myapp-cd-validation 
   params: 
+    - name: resource-git-url
+      value: https://github.com/marrober/myApp-cd.git
+    - name: resource-git-revision
+      value: main
+    - name: deployment-asset-subdir
+      value: env/02-qa
     - name: acs_central_endpoint
       value: acs-secret
     - name: acs_api_token
       value: acs-secret
+    - name: recursive-search 
+      value: "true"
     - name: roxctl-output-format
-      value: "table"   
-    - name: image-url
-      value: image-registry.openshift-image-registry.svc:5000/myapp-ci/myapp-runtime:705c-7gzr7     
+      value: "table"      
   workspaces:
   - name: files
     volumeClaimTemplate:

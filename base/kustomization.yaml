@@ -14,10 +14,12 @@ resources:
 - 05-tasks/create-runtimeImage.yaml
 - 05-tasks/update-and-commit-kustomization-file.yaml
 - 05-tasks/acs-image-build-check.yaml
-- 06-pipeline/pipeline.yaml
-- 06-pipeline/pipeline-2.yaml
+- 05-tasks/acs-deployment-check.yaml
+- 05-tasks/configure-deployment-assets.yaml
+- 06-pipeline/ci-pipeline.yaml
+- 06-pipeline/cd-validation-pipeline.yaml
 - 08-triggers/event-listener.yaml
-- 08-triggers/event-listenter-route.yaml
+- 08-triggers/event-listener-route.yaml
 - 08-triggers/trigger-binding.yaml
 - 08-triggers/trigger-template.yaml
 

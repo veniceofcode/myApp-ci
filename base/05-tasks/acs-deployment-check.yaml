@@ -1,0 +1,120 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: acs-deployment-check
+spec:
+  params:
+    - name: acs_central_endpoint
+      description: Secret containing the address:port tuple for ACS Central (example - rox.stackrox.io:443)
+      type: string
+    - name: acs_api_token
+      description: Secret containing the ACS API token with CI permissions
+      type: string
+    - name: source_location
+      description: Location of the file(s) to be scanned
+      type: string
+    - name: recursive-search
+      description: search for files recursively in directory tree
+      type: string
+    - name: roxctl-output-format
+      description : Roxctl output format - either table, json or csv
+      type: string     
+  results:
+    - name: scan-result
+  steps:
+##------------------------------------------------------------------
+# Rox deployment check - check deployment resource files
+##------------------------------------------------------------------
+    - name: rox-deployment-check
+      env:
+        - name: ROX_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: acs_api_token
+              name: $(params.acs_api_token)
+        - name: ROX_CENTRAL_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              key: acs_central_endpoint
+              name: $(params.acs_central_endpoint)
+      image: registry.access.redhat.com/ubi8/ubi:8.3-297
+      resources: {}
+      script: >-
+        #!/usr/bin/env bash
+
+        set +x
+
+        curl -s -k -L -H "Authorization: Bearer $ROX_API_TOKEN"
+        https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output
+        ./roxctl > /dev/null; echo "Getting roxctl"
+
+        chmod +x ./roxctl  > /dev/null
+
+        yum install jq -y -q
+
+        if [[ "$(params.recursive-search)" == "true" ]]; then
+
+          fileList=`find /files/resources/$(params.source_location)/output \
+          -name '*.yaml' -o -name '*.yml'`
+
+        else
+
+          fileList=`ls /files/resources/$(params.source_location)/output/*.y*ml`
+
+        fi
+
+        failTask="false"
+
+        for file in $fileList
+
+        do
+
+         #var=$(grep "apiVersion: route.openshift.io" "$file")
+
+          #result1=$?
+
+          #var=$(grep "kustomize.config.k8s.io" "$file")
+
+          #result2=$?
+
+          #if [ $result1 == "0" ] || [ $result2 == "0" ] ; then
+
+            #echo "."
+
+          #else
+
+            echo "Deployment check on file : $file"
+
+            ./roxctl deployment check --insecure-skip-tls-verify \
+            -e $ROX_CENTRAL_ENDPOINT --file $file -o $(params.roxctl-output-format) \
+            --retries 0 > fileScanResult 2>&1
+
+            cat fileScanResult
+
+            fileScanResultNewVar=`cat fileScanResult`
+
+            if [[ "$fileScanResultNewVar" == *"failed policies found:"* ]]; then
+              failTask=true
+            fi
+
+          #fi
+        done
+
+        if [[ "$failTask" == "true" ]]; then
+
+          echo "Setting overall result to fail"
+
+          echo -n "fail" | tee $(results.scan-result.path) >> /dev/null
+
+        else
+
+          echo "Setting overall result to pass"
+
+          echo -n "pass" | tee $(results.scan-result.path) >> /dev/null
+
+        fi
+
+      workingDir: /workspace
+  workspaces:
+  - name: files
+    mountPath: /files
