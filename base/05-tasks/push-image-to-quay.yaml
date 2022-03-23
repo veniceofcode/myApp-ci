@@ -46,7 +46,7 @@ spec:
       resources: {}
     - name: buildah-tag-image
       command:
-       - buildah
+        - buildah
         - tag
         - '--storage-driver=$(params.STORAGE_DRIVER)'
         - '--root'
