@@ -32,7 +32,7 @@ spec:
         - '-c'
       args:
         - |-
-          echo $(params.image-stream-location)
+          echo "$(params.image-stream-location)""
 
       image: registry.redhat.io/rhel8/buildah
       resources: {}
