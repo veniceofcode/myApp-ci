@@ -57,7 +57,4 @@ spec:
     script: >
       #!/bin/sh
 
-      gitops-commit-status --url $(params.GIT_REPO) \
-      --path $(params.REPO) --sha $(params.COMMIT_SHA) \
-      --context $(params.CONTEXT) \
-      --status $(params.STATE)
+      gitops-commit-status --url $(params.GIT_REPO) --path $(params.REPO) --sha $(params.COMMIT_SHA) --context $(params.CONTEXT) --status $(params.STATE)
