@@ -33,7 +33,7 @@ spec:
         - '--storage-driver=$(params.STORAGE_DRIVER)'
         - '--root'
         - '/files/buildah-containers'        
-        - $(param.image-stream-location)
+        - $(params.image-stream-location)
         - quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
       image: registry.redhat.io/rhel8/buildah
       resources: {}
