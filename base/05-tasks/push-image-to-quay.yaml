@@ -27,12 +27,10 @@ spec:
     - name: quay-image-repo-location
   steps:
     - name: echo-image name
-      command:
-        - /bin/sh
-        - '-c'
-      args:
-        - |-
-          echo "$(params.image-stream-location)"
+      script: >-
+        #!/usr/bin/env bash
+
+        echo "$(params.image-stream-location)"
 
       image: registry.redhat.io/rhel8/buildah
       resources: {}
