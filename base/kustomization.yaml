@@ -17,6 +17,7 @@ resources:
 - 05-tasks/push-image-to-quay.yaml
 - 05-tasks/acs-deployment-check.yaml
 - 05-tasks/configure-deployment-assets.yaml
+- 05-tasks/set-commit-status-github.yaml
 - 06-pipeline/ci-pipeline.yaml
 - 06-pipeline/cd-validation-pipeline.yaml
 - 08-triggers/event-listener.yaml
