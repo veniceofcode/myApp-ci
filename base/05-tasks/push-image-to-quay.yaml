@@ -76,13 +76,11 @@ spec:
         - '-c'
       args:
         - |-
-          export TAG=$(cat $(results.new-tag.path))
-
-          echo $TAG
 
           echo "quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)" > $(results.quay-image-repo-location.path)
 
           echo -------------------------------------
+
           cat $(results.quay-image-repo-location.path)
 
       image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
