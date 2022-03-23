@@ -26,7 +26,7 @@ spec:
   results:
     - name: quay-image-repo-location
   steps:
-    - name: echo-image name
+    - name: echo-image-name
       script: >-
         #!/usr/bin/env bash
 
