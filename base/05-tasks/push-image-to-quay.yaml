@@ -26,24 +26,24 @@ spec:
   results:
     - name: quay-image-repo-location
   steps:
-    - name: echo-image-name
-      script: >-
-        #!/usr/bin/env bash
+#    - name: echo-image-name
+#      script: >-
+#        #!/usr/bin/env bash
 
-        echo "$(params.image-stream-location)"
+#        echo "$(params.image-stream-location)"
 
-      image: registry.redhat.io/rhel8/buildah
-      resources: {}
-    - name: buildah-pull-image
-      command:
-        - buildah
-        - pull
-        - '--storage-driver=$(params.STORAGE_DRIVER)'
-        - '--root'
-        - '/files/buildah-containers'        
-        - $(params.image-stream-location) 
-      image: registry.redhat.io/rhel8/buildah
-      resources: {}
+#      image: registry.redhat.io/rhel8/buildah
+#      resources: {}
+#    - name: buildah-pull-image
+#      command:
+#        - buildah
+#        - pull
+#        - '--storage-driver=$(params.STORAGE_DRIVER)'
+#        - '--root'
+#        - '/files/buildah-containers'        
+#        - $(params.image-stream-location) 
+#      image: registry.redhat.io/rhel8/buildah
+#      resources: {}
     - name: buildah-tag-image
       command:
         - buildah
