@@ -28,6 +28,8 @@ spec:
     type: string
   - name: LOCATION
     type: string
+  results:
+    - name: commit-id
   steps:
   - name: update-ops-repo-with-imagetag
     env:
@@ -117,6 +119,8 @@ spec:
       echo "-----------------------------------------------------------------"     
 
       git push -u
+
+      git rev-parse HEAD > $(results.commit-id.path)
 
       if [ -z "$(params.GIT_PR_TARGET_BRANCH)" ] 
       
