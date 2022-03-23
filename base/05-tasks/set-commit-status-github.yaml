@@ -3,7 +3,6 @@ kind: Task
 metadata:
   creationTimestamp: null
   name: set-commit-status
-  namespace: cicd
 spec:
   params:
   - name: GIT_REPO
