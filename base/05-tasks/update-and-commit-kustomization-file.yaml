@@ -42,7 +42,7 @@ spec:
     script: >
       #!/bin/sh
 
-      echo "Git URL : " $(params.GIT_URL)
+      echo "Git URL : " $(params.GIT_URL) ".git"
 
       echo "Git Repo name : " $(params.GIT_REPO_NAME)
 
@@ -74,7 +74,7 @@ spec:
 
       ls -alR
 
-      git clone https://${GITHOSTACCESSTOKEN}@$(params.GIT_URL)
+      git clone https://${GITHOSTACCESSTOKEN}@$(params.GIT_URL).git
 
       echo "-----------------------------------------------------------------"
 

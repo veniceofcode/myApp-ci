@@ -57,4 +57,5 @@ spec:
     script: >
       #!/bin/sh
 
-      curl
+      curl -H 'Content-Type: application/json' -X POST https://$GITHOSTACCESSTOKEN:x-oauth-basic@api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA) -d '{"state":"$(params.STATE)", "description":"$(params.DESCRIPTION)", "context":"$(params.CONTEXT)"}'
+
