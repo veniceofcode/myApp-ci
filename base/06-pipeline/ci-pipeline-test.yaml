@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  labels:
+    pipeline.openshift.io/type: kubernetes
+  name: myapp-ci-pipeline-test
+  namespace: myapp-ci
+spec:
+  tasks:
+##------------------------------------------------------------------
+# Add commit status to QA branch
+##------------------------------------------------------------------      
+  - name: set-commit-status
+    params: 
+    - name: GIT_REPO
+      value: marrober/myApp-cd
+    - name: REPO
+      value: myApp-cd
+    - name: GIT_TOKEN_SECRET_NAME
+      value: github-access-token
+    - name: GIT_TOKEN_SECRET_KEY
+      value: token
+    - name: COMMIT_SHA
+      value: ab6827784c56d5d720967d80fd8dae561c3486aa
+    - name: DESCRIPTION
+      value: "Pending status on commit to qa-ready"   
+    - name: CONTEXT 
+      value: "continuous-integration/Tekton"   
+    - name: STATE
+      value: "success"           
+    taskRef:
+      kind: Task
+      name: set-commit-status   
