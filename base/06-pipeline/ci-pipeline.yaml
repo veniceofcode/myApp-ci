@@ -10,7 +10,7 @@ spec:
   - name: intermediate-image
     type: image
   - name: runtime-image
-    type: image    
+    type: image
   params:
   - name: STORAGE_DRIVER            # Used for the build step to tell Buildah how to store images
     type: string
@@ -26,13 +26,13 @@ spec:
   - name: commit_date               # Application source code git commit date - Only used when triggered by a Tekton trigger
     type: string
   - name: commit_author             # Application source code git commit author - Only used when triggered by a Tekton trigger
-    type: string    
+    type: string
   - name: openshift_app_name        # OpenShift project name
     type: string
   - name: runtime_image_name        # OpenShift imagestream name
     type: string
   - name: runtime_base_image        # Input base image into which the build jar file is injected
-    type: string 
+    type: string
   - name: myapp-cd-git-url          # Continuous delivery git repository url
     type: string
   - name: my-app-cd-git-repo-name   # Continuous delivery git repository name
@@ -44,28 +44,28 @@ spec:
   - name: my-app-cd-git-commit-comment-dev  # Comment to be applied to the cd git commit when updating the Kustomize files
     type: string
   - name: my-app-cd-git-commit-comment-qa   # Comment to be applied to the cd git commit when updating the Kustomize files
-    type: string    
+    type: string
   - name: my-app-cd-git-repo-branch-qa      # Branch for commit of kustomization change for QA updates
-    type: string   
+    type: string
   - name: my-app-cd-git-target-branch-pr    # Target branch for a pull request to merge changes from an environment specific 'feature' branch
     type: string
   - name: my-app-cd-git-user-name           # Continuous delivery git repository update user - username
     type: string
-  - name: my-app-cd-git-user-email          # Continuous delivery git repository update user - email 
-    type: string  
+  - name: my-app-cd-git-user-email          # Continuous delivery git repository update user - email
+    type: string
   - name: acs_central_endpoint              # Advanced Cluster Security endpoint
     type: string
   - name: acs_api_token                     # Advanced Cluster Security access token secret
     type: string
   - name: roxctl-output-format              # Advanced Cluster Security image scan output format
-    type: string  
+    type: string
   - name: quay-io-account                   # Quay.io account name
     type: string
   - name: quay-io-repository                # Quay.io repository name
     type: string
   - name: quay-io-image-tag-name            # Quay.io repository image tag
     type: string
-    default: "latest"  
+    default: "latest"
   tasks:
 ##------------------------------------------------------------------
 # Git clone source code task
@@ -85,10 +85,10 @@ spec:
       name:  git-clone
     workspaces:
     - name: output
-      workspace: files    
+      workspace: files
 ##------------------------------------------------------------------
 # Build application
-##------------------------------------------------------------------      
+##------------------------------------------------------------------
   - name: build
     params:
     - name: STORAGE_DRIVER
@@ -104,7 +104,7 @@ spec:
     - git-clone-source
     workspaces:
     - name: files
-      workspace: files      
+      workspace: files
 ##------------------------------------------------------------------
 # Create the runtime image from a base container image and
 # deployable asset extracted from the builder container image.
@@ -136,7 +136,7 @@ spec:
     - name: pipelineRunName
       value: $(context.pipelineRun.name)
     - name: pipelineName
-      value: $(context.pipeline.name)        
+      value: $(context.pipeline.name)
     resources:
       inputs:
       - name: intermediate-image
@@ -151,13 +151,13 @@ spec:
     - build
     workspaces:
     - name: files
-      workspace: files  
+      workspace: files
 ##------------------------------------------------------------------
 # Clone the cd repository and update the kustomization file for the
 # development environment to refer to the new tagged image.
-##------------------------------------------------------------------      
+##------------------------------------------------------------------
   - name: update-and-commit-kustomization-file-dev
-    params: 
+    params:
     - name: GIT_URL
       value: $(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
@@ -171,16 +171,16 @@ spec:
     - name: GIT_USER_EMAIL
       value: $(params.my-app-cd-git-user-email)
     - name: GIT_COMMIT_COMMENT
-      value: $(params.my-app-cd-git-commit-comment-dev)    
-    - name: IMAGE 
-      value: $(tasks.create-runtime-image.results.new-image-repo-location)     
+      value: $(params.my-app-cd-git-commit-comment-dev)
+    - name: IMAGE
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)
     - name: LOCATION
-      value: "dev" 
+      value: "dev"
     taskRef:
       kind: Task
-      name: update-and-commit-kustomization-file   
+      name: update-and-commit-kustomization-file
     runAfter:
-    - create-runtime-image      
+    - create-runtime-image
     workspaces:
     - name: files
       workspace: files
@@ -196,12 +196,12 @@ spec:
     - name: public-url
       value: $(tasks.create-runtime-image.results.new-image-repo-location)
     - name: roxctl-output-format
-      value: $(params.roxctl-output-format)        
+      value: $(params.roxctl-output-format)
     taskRef:
       kind: Task
-      name: acs-image-build-check    
+      name: acs-image-build-check
     runAfter:
-    - create-runtime-image    
+    - create-runtime-image
 ##------------------------------------------------------------------
 # Push the new runtime image to quay.io
 ##------------------------------------------------------------------
@@ -233,9 +233,9 @@ spec:
 ##------------------------------------------------------------------
 # Clone the cd repository and update the kustomization file for the
 # qa environment to refer to the new tagged image.
-##------------------------------------------------------------------      
+##------------------------------------------------------------------
   - name: update-and-commit-kustomization-file-qa
-    params: 
+    params:
     - name: GIT_URL
       value: $(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
@@ -251,30 +251,29 @@ spec:
     - name: GIT_USER_EMAIL
       value: $(params.my-app-cd-git-user-email)
     - name: GIT_COMMIT_COMMENT
-      value: $(params.my-app-cd-git-commit-comment-qa)    
-    - name: IMAGE 
-      value: $(tasks.push-image-to-quay.results.quay-image-repo-location)   
+      value: $(params.my-app-cd-git-commit-comment-qa)
+    - name: IMAGE
+      value: $(tasks.push-image-to-quay.results.quay-image-repo-location)
     - name: LOCATION
-      value: "qa"           
+      value: "qa"
     taskRef:
       kind: Task
-      name: update-and-commit-kustomization-file   
+      name: update-and-commit-kustomization-file
     runAfter:
-      - push-image-to-quay  
-      - image-build-check
+      - push-image-to-quay
     when:
     - input: "$(tasks.image-build-check.results.scan-result)"
       operator: in
       values:
-      - "pass"    
+      - "pass"
     workspaces:
     - name: files
-      workspace: files    
+      workspace: files
 ##------------------------------------------------------------------
 # Add commit status to QA branch
-##------------------------------------------------------------------      
+##------------------------------------------------------------------
   - name: set-commit-status
-    params: 
+    params:
     - name: GIT_REPO
       value: $(params.myapp-cd-git-url)
     - name: REPO
@@ -286,18 +285,18 @@ spec:
     - name: COMMIT_SHA
       value: $(tasks.update-and-commit-kustomization-file-qa.results.commit-id)
     - name: DESCRIPTION
-      value: "Pending status on commit to qa-ready"   
-    - name: CONTEXT 
-      value: "continuous-integration/Tekton"   
+      value: "Pending status on commit to qa-ready"
+    - name: CONTEXT
+      value: "continuous-integration/Tekton"
     - name: STATE
-      value: "pending"           
+      value: "pending"
     taskRef:
       kind: Task
-      name: set-commit-status   
+      name: set-commit-status
     runAfter:
       - update-and-commit-kustomization-file-qa
 ##------------------------------------------------------------------
 # Workspace definition.
-##------------------------------------------------------------------         
+##------------------------------------------------------------------
   workspaces:
-  - name: files  
+  - name: files
