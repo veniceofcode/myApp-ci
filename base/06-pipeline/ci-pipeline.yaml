@@ -272,7 +272,7 @@ spec:
 ##------------------------------------------------------------------
 # Add commit status to QA branch
 ##------------------------------------------------------------------
-  - name: set-commit-status
+  - name: set-commit-status-qa-branch-pending
     params:
     - name: GIT_REPO
       value: $(params.myapp-cd-git-url)
@@ -295,6 +295,98 @@ spec:
       name: set-commit-status
     runAfter:
       - update-and-commit-kustomization-file-qa
+##------------------------------------------------------------------
+# Git clone deployment assets task (qa-branch)
+##------------------------------------------------------------------
+  - name: git-clone-resources-cd-qa-branch
+    params:
+    - name: url
+      value: $(params.myapp-cd-git-url)
+    - name: revision
+      value: $(params.my-app-cd-git-repo-name)
+    - name: verbose
+      value: 'false'
+    - name: subdirectory
+      value: qa-branch-resources
+    taskRef:
+      kind: ClusterTask
+      name:  git-clone
+    runAfter:
+    - set-commit-status-qa-branch-pending
+    workspaces:
+    - name: output
+      workspace: resources
+##------------------------------------------------------------------
+# Process kustomization file to generate deployment resources that
+# will be used on the QA branch
+##------------------------------------------------------------------
+  - name: configure-deployment-assets
+    params:
+    - name: subdirectory
+      value: $(params.my-app-cd-git-repo-path-to-content-qa)
+    taskRef:
+      kind: Task
+      name: configure-deployment-assets
+    runAfter:
+    - git-clone-resources-cd-qa-branch
+    workspaces:
+    - name: files
+      workspace: files
+##------------------------------------------------------------------
+# Perform resource deployment check on files of interest
+##------------------------------------------------------------------
+  - name: resource-deployment-check
+    params:
+    - name: acs_central_endpoint
+      value: $(params.acs_central_endpoint)
+    - name: acs_api_token
+      value: $(params.acs_api_token)
+    - name: source_location
+      value: $(params.deployment-asset-subdir)
+    - name: recursive-search
+      value: $(params.recursive-search)
+    - name: roxctl-output-format
+      value: $(params.roxctl-output-format)
+    taskRef:
+      kind: Task
+      name: acs-deployment-check
+    workspaces:
+    - name: files
+      workspace: files
+    runAfter:
+    - configure-deployment-assets
+##------------------------------------------------------------------
+# Add commit status to QA branch if the resource deployment check
+# is successful
+##------------------------------------------------------------------
+  - name: set-commit-status
+    params:
+    - name: GIT_REPO
+      value: $(params.resource-git-url)
+    - name: REPO
+      value: $(params.resource-git-name)
+    - name: GIT_TOKEN_SECRET_NAME
+      value: github-access-token
+    - name: GIT_TOKEN_SECRET_KEY
+      value: token
+    - name: COMMIT_SHA
+      value: "123"
+    - name: DESCRIPTION
+      value: "Pending status on commit to qa-ready"
+    - name: CONTEXT
+      value: "continuous-integration/Tekton"
+    - name: STATE
+      value: "success"
+    taskRef:
+      kind: Task
+      name: set-commit-status
+    when:
+    - input: "$(tasks.resource-deployment-check.results.scan-result)"
+      operator: in
+      values:
+      - "pass"
+    runAfter:
+      - resource-deployment-check
 ##------------------------------------------------------------------
 # Workspace definition.
 ##------------------------------------------------------------------

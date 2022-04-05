@@ -76,3 +76,11 @@ spec:
         resources:
           requests:
             storage: 20Gi
+  - name: resources
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
