@@ -40,21 +40,33 @@ spec:
         - pull
         - '--storage-driver=$(params.STORAGE_DRIVER)'
         - '--root'
-        - '/files/buildah-containers'        
-        - $(params.image-stream-location) 
+        - '/files/buildah-containers'
+        - $(params.image-stream-location)
       image: registry.redhat.io/rhel8/buildah
-      resources: {}
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1000m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
     - name: buildah-tag-image
       command:
         - buildah
         - tag
         - '--storage-driver=$(params.STORAGE_DRIVER)'
         - '--root'
-        - '/files/buildah-containers'        
+        - '/files/buildah-containers'
         - $(params.image-stream-location)
-        - quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name) 
+        - quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
       image: registry.redhat.io/rhel8/buildah
-      resources: {}
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1000m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
     - name: push-image-to-quay
       command:
         - buildah
@@ -63,9 +75,16 @@ spec:
         - '--authfile'
         - /etc/secret-volume/.dockerconfigjson
         - '--root'
-        - '/files/buildah-containers'        
+        - '/files/buildah-containers'
         - quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
       image: registry.redhat.io/rhel8/buildah
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1000m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
       volumeMounts:
         - name: quay-auth-secret
           mountPath: /etc/secret-volume
