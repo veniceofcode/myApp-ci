@@ -9,6 +9,8 @@ spec:
   params:
     - name: resource-git-url
       value: https://github.com/marrober/myApp-cd.git
+    - name: resource-git-name
+      value: myApp-cd
     - name: resource-git-revision
       value: qa-ready
     - name: deployment-asset-subdir

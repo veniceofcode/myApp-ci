@@ -9,6 +9,8 @@ spec:
   params:
   - name: resource-git-url              # CD content repository
     type: string
+  - name: resource-git-namespace        # CD content repository namespace
+    type: string
   - name: resource-git-revision         # Branch of the CD content repository
     type: string
   - name: deployment-asset-subdir       # Specific location of deployment assets in the CD repository
@@ -86,9 +88,9 @@ spec:
   - name: set-commit-status
     params:
     - name: GIT_REPO
-      value: $(params.myapp-cd-git-url)
+      value: $(params.resource-git-url)
     - name: REPO
-      value: $(params.my-app-cd-git-repo-name)
+      value: $(params.resource-git-name)
     - name: GIT_TOKEN_SECRET_NAME
       value: github-access-token
     - name: GIT_TOKEN_SECRET_KEY
