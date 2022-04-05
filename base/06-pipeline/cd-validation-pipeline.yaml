@@ -5,7 +5,7 @@ metadata:
     pipeline.openshift.io/type: kubernetes
   name: myapp-cd-validation
   namespace: myapp-ci
-spec: 
+spec:
   params:
   - name: resource-git-url              # CD content repository
     type: string
@@ -20,7 +20,7 @@ spec:
   - name: recursive-search              # Search subdirectories of deployment assets
     type: string
   - name: roxctl-output-format          # Advanced Cluster Security image scan output format
-    type: string  
+    type: string
   tasks:
 ##------------------------------------------------------------------
 # Git clone deployment assets code task
@@ -40,7 +40,7 @@ spec:
       name:  git-clone
     workspaces:
     - name: output
-      workspace: files  
+      workspace: files
 ##------------------------------------------------------------------
 # Process kustomization file to generate deployment resources
 ##------------------------------------------------------------------
@@ -55,7 +55,7 @@ spec:
     - git-clone-resources
     workspaces:
     - name: files
-      workspace: files   
+      workspace: files
 ##------------------------------------------------------------------
 # Perform resource deployment check on files of interest
 ##------------------------------------------------------------------
@@ -78,10 +78,41 @@ spec:
     - name: files
       workspace: files
     runAfter:
-    - configure-deployment-assets     
+    - configure-deployment-assets
+##------------------------------------------------------------------
+# Add commit status to QA branch if the resource deployment check
+# is successful
+##------------------------------------------------------------------
+  - name: set-commit-status
+    params:
+    - name: GIT_REPO
+      value: $(params.myapp-cd-git-url)
+    - name: REPO
+      value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_TOKEN_SECRET_NAME
+      value: github-access-token
+    - name: GIT_TOKEN_SECRET_KEY
+      value: token
+    - name: COMMIT_SHA
+      value: $(tasks.update-and-commit-kustomization-file-qa.results.commit-id)
+    - name: DESCRIPTION
+      value: "Pending status on commit to qa-ready"
+    - name: CONTEXT
+      value: "continuous-integration/Tekton"
+    - name: STATE
+      value: "success"
+    taskRef:
+      kind: Task
+      name: set-commit-status
+    when:
+    - input: "$(tasks.resource-deployment-check.results.scan-result)"
+      operator: in
+      values:
+      - "pass"
+    runAfter:
+      - resource-deployment-check
 ##------------------------------------------------------------------
 # Workspace definition.
-##------------------------------------------------------------------         
+##------------------------------------------------------------------
   workspaces:
-  - name: files  
-
+  - name: files
