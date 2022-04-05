@@ -16,7 +16,7 @@ spec:
     type: string
     default: ""
   - name: GIT_PATH_TO_CONTENT
-    type: string    
+    type: string
     default: ""
   - name: GIT_USER_NAME
     type: string
@@ -42,7 +42,7 @@ spec:
     script: >
       #!/bin/sh
 
-      echo "Git URL : " $(params.GIT_URL) ".git"
+      echo "Git URL : " $(params.GIT_URL)".git"
 
       echo "Git Repo name : " $(params.GIT_REPO_NAME)
 
@@ -95,8 +95,8 @@ spec:
       echo "-----------------------------------------------------------------"
 
       echo "File before change"
-      
-      echo "-----------------------------------------------------------------"      
+
+      echo "-----------------------------------------------------------------"
 
       cat kustomization.yaml
 
@@ -105,18 +105,18 @@ spec:
       echo "-----------------------------------------------------------------"
 
       echo "File after change"
-      
-      echo "-----------------------------------------------------------------"      
+
+      echo "-----------------------------------------------------------------"
 
       cat kustomization.yaml
 
       cd /workspace/files/$(params.LOCATION)/$(params.GIT_REPO_NAME)
 
-      git add .    
+      git add .
 
-      git commit -m "$(params.GIT_COMMIT_COMMENT)"    
+      git commit -m "$(params.GIT_COMMIT_COMMENT)"
 
-      echo "-----------------------------------------------------------------"     
+      echo "-----------------------------------------------------------------"
 
       git push -u
 
@@ -124,8 +124,8 @@ spec:
 
       cat $(results.commit-id.path)
 
-      if [ -z "$(params.GIT_PR_TARGET_BRANCH)" ] 
-      
+      if [ -z "$(params.GIT_PR_TARGET_BRANCH)" ]
+
       then
 
         echo "Pull request is not required"
@@ -145,7 +145,7 @@ spec:
         rm -rf gh-token.txt
 
         gh pr create --fill --head $(params.GIT_BRANCH) --base $(params.GIT_PR_TARGET_BRANCH)
-      
+
       fi
 
   workspaces:
