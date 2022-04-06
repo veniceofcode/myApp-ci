@@ -3,7 +3,7 @@ kind: Task
 metadata:
   name: configure-deployment-assets
 spec:
-  params: 
+  params:
     - name: subdirectory
       description: location of deployment assets in the workspace
       type: string
@@ -18,7 +18,7 @@ spec:
         set +x
 
         ls -al
-        
+
         echo "--------------------------------------------------------------------"
 
         echo " Kustomization file "
@@ -27,13 +27,13 @@ spec:
 
         cat kustomization.yaml
 
-        kustomize build  
+        kustomize build
 
         echo "--------------------------------------------------------------------"
 
         echo " Processed content "
-        
-        echo "--------------------------------------------------------------------"       
+
+        echo "--------------------------------------------------------------------"
 
         kustomize build > configured-deployment.yaml
 
@@ -42,8 +42,8 @@ spec:
         echo "--------------------------------------------------------------------"
 
         echo " Split into individual files for analysis "
-        
-        echo "--------------------------------------------------------------------"     
+
+        echo "--------------------------------------------------------------------"
 
 
         kubectl-slice -f configured-deployment.yaml -o ./output
@@ -51,7 +51,7 @@ spec:
         ls -al ./output
 
       image: quay.io/marrober/kustomize:latest
-      workingDir: /files/resources/$(params.subdirectory)
+      workingDir: /files/$(params.subdirectory)
 
   workspaces:
   - name: files

@@ -59,6 +59,8 @@ spec:
     type: string
   - name: roxctl-output-format              # Advanced Cluster Security image scan output format
     type: string
+  - name: recursive-search                  # Search the subdirectories for deployment resources
+    type: string
   - name: quay-io-account                   # Quay.io account name
     type: string
   - name: quay-io-repository                # Quay.io repository name
@@ -205,31 +207,31 @@ spec:
 ##------------------------------------------------------------------
 # Push the new runtime image to quay.io
 ##------------------------------------------------------------------
-  - name: push-image-to-quay
-    params:
-      - name: quay-io-account
-        value: $(params.quay-io-account)
-      - name: quay-io-repository
-        value: $(params.quay-io-repository)
-      - name: quay-io-image-tag-name
-        value: $(tasks.create-runtime-image.results.new-tag)
-      - name: image-stream-location
-        value: $(tasks.create-runtime-image.results.new-image-repo-location)
-      - name: STORAGE_DRIVER
-        value: $(params.STORAGE_DRIVER)
-    taskRef:
-      kind: Task
-      name: push-image-to-quay
-    when:
-    - input: "$(tasks.image-build-check.results.scan-result)"
-      operator: in
-      values:
-      - "pass"
-    runAfter:
-      - image-build-check
-    workspaces:
-    - name: files
-      workspace: files
+#  - name: push-image-to-quay
+#    params:
+#      - name: quay-io-account
+#        value: $(params.quay-io-account)
+#      - name: quay-io-repository
+#        value: $(params.quay-io-repository)
+#      - name: quay-io-image-tag-name
+#        value: $(tasks.create-runtime-image.results.new-tag)
+#      - name: image-stream-location
+#        value: $(tasks.create-runtime-image.results.new-image-repo-location)
+#      - name: STORAGE_DRIVER
+#        value: $(params.STORAGE_DRIVER)
+#    taskRef:
+#      kind: Task
+#      name: push-image-to-quay
+#    when:
+#    - input: "$(tasks.image-build-check.results.scan-result)"
+#      operator: in
+#      values:
+#      - "pass"
+#    runAfter:
+#      - image-build-check
+#    workspaces:
+#    - name: files
+#      workspace: files
 ##------------------------------------------------------------------
 # Clone the cd repository and update the kustomization file for the
 # qa environment to refer to the new tagged image.
@@ -253,14 +255,16 @@ spec:
     - name: GIT_COMMIT_COMMENT
       value: $(params.my-app-cd-git-commit-comment-qa)
     - name: IMAGE
-      value: $(tasks.push-image-to-quay.results.quay-image-repo-location)
+      value: $(tasks.create-runtime-image.results.new-image-repo-location)
+      # value: $(tasks.push-image-to-quay.results.quay-image-repo-location)
     - name: LOCATION
       value: "qa"
     taskRef:
       kind: Task
       name: update-and-commit-kustomization-file
     runAfter:
-      - push-image-to-quay
+      # - push-image-to-quay
+      - image-build-check
     when:
     - input: "$(tasks.image-build-check.results.scan-result)"
       operator: in
@@ -303,11 +307,9 @@ spec:
     - name: url
       value: $(params.myapp-cd-git-url)
     - name: revision
-      value: $(params.my-app-cd-git-repo-name)
+      value: $(params.my-app-cd-git-repo-branch-qa)
     - name: verbose
       value: 'false'
-    - name: subdirectory
-      value: qa-branch-resources
     taskRef:
       kind: ClusterTask
       name:  git-clone
@@ -331,7 +333,7 @@ spec:
     - git-clone-resources-cd-qa-branch
     workspaces:
     - name: files
-      workspace: files
+      workspace: resources
 ##------------------------------------------------------------------
 # Perform resource deployment check on files of interest
 ##------------------------------------------------------------------
@@ -342,7 +344,7 @@ spec:
     - name: acs_api_token
       value: $(params.acs_api_token)
     - name: source_location
-      value: $(params.deployment-asset-subdir)
+      value: $(params.my-app-cd-git-repo-path-to-content-qa)/output
     - name: recursive-search
       value: $(params.recursive-search)
     - name: roxctl-output-format
@@ -352,7 +354,7 @@ spec:
       name: acs-deployment-check
     workspaces:
     - name: files
-      workspace: files
+      workspace: resources
     runAfter:
     - configure-deployment-assets
 ##------------------------------------------------------------------
