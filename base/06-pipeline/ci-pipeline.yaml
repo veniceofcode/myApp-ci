@@ -364,9 +364,9 @@ spec:
   - name: set-commit-status
     params:
     - name: GIT_REPO
-      value: $(params.resource-git-url)
+      value: $(params.myapp-cd-git-url)
     - name: REPO
-      value: $(params.resource-git-name)
+      value: $(params.my-app-cd-git-repo-name)
     - name: GIT_TOKEN_SECRET_NAME
       value: github-access-token
     - name: GIT_TOKEN_SECRET_KEY
