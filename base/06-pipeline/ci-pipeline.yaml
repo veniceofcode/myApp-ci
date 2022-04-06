@@ -163,7 +163,7 @@ spec:
   - name: update-and-commit-kustomization-file-dev
     params:
     - name: GIT_URL
-      value: $(paramsrepo_type)/$(params.myapp-cd-git-url)
+      value: $(params.repo_type)/$(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
       value: $(params.my-app-cd-git-repo-name)
     - name: GIT_BRANCH
@@ -241,7 +241,7 @@ spec:
   - name: update-and-commit-kustomization-file-qa
     params:
     - name: GIT_URL
-      value: $(paramsrepo_type)/$(params.myapp-cd-git-url)
+      value: $(params.repo_type)/$(params.myapp-cd-git-url)
     - name: GIT_REPO_NAME
       value: $(params.my-app-cd-git-repo-name)
     - name: GIT_BRANCH
@@ -307,7 +307,7 @@ spec:
   - name: git-clone-resources-cd-qa-branch
     params:
     - name: url
-      value: $(paramsrepo_type)/$(params.myapp-cd-git-url)
+      value: $(params.repo_type)/$(params.myapp-cd-git-url)
     - name: revision
       value: $(params.my-app-cd-git-repo-branch-qa)
     - name: verbose
