@@ -9,9 +9,9 @@ spec:
   tasks:
 ##------------------------------------------------------------------
 # Add commit status to QA branch
-##------------------------------------------------------------------      
+##------------------------------------------------------------------
   - name: set-commit-status
-    params: 
+    params:
     - name: GIT_REPO
       value: marrober/myApp-cd
     - name: REPO
@@ -21,13 +21,13 @@ spec:
     - name: GIT_TOKEN_SECRET_KEY
       value: token
     - name: COMMIT_SHA
-      value: ab6827784c56d5d720967d80fd8dae561c3486aa
+      value: 013cf04661a86155772b9fdeeb9463bdbeeb89f3
     - name: DESCRIPTION
-      value: "Pending status on commit to qa-ready"   
-    - name: CONTEXT 
-      value: "continuous-integration/Tekton"   
+      value: "Pending status on commit to qa-ready"
+    - name: CONTEXT
+      value: "continuous-integration/Tekton"
     - name: STATE
-      value: "success"           
+      value: "pending"
     taskRef:
       kind: Task
-      name: set-commit-status   
+      name: set-commit-status
