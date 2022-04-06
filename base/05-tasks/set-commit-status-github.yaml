@@ -54,7 +54,7 @@ spec:
           name: $(params.GIT_TOKEN_SECRET_NAME)
     image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
     resources: {}
-script: >
+    script: >
       #!/bin/sh
 
       echo "curl -s -H 'Content-Type: application/json' -X POST https://$GITHOSTACCESSTOKEN:x-oauth-basic@api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA) -d '{\"state\":\"$(params.STATE)\", \"description\":\"$(params.DESCRIPTION)\", \"context\":\"$(params.CONTEXT)\"}'" > file.txt
