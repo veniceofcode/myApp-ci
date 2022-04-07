@@ -64,3 +64,5 @@ spec:
       chmod u+x curl-cmd.sh
 
       `./curl-cmd.sh`
+      
+      sleep 1000
