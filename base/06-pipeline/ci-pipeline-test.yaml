@@ -21,7 +21,7 @@ spec:
     - name: GIT_TOKEN_SECRET_KEY
       value: token
     - name: COMMIT_SHA
-      value: 013cf04661a86155772b9fdeeb9463bdbeeb89f3
+      value: 209272282060166d94f1100adb6faaba8290a0db
     - name: DESCRIPTION
       value: "Pending status on commit to qa-ready"
     - name: CONTEXT
