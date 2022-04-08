@@ -57,12 +57,13 @@ spec:
     script: >
       #!/bin/sh
 
-      echo "curl -vvv -H 'Content-Type: application/json' -X POST https://$GITHOSTACCESSTOKEN:x-oauth-basic@api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA) -d '{\"state\":\"$(params.STATE)\", \"description\":\"$(params.DESCRIPTION)\", \"context\":\"$(params.CONTEXT)\"}'" > curl-cmd.sh
+      echo "curl -H 'Content-Type: application/json' -X POST https://$GITHOSTACCESSTOKEN:x-oauth-basic@api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA) -d '{\"state\":\"$(params.STATE)\", \"description\":\"$(params.DESCRIPTION)\", \"context\":\"$(params.CONTEXT)\"}'" > curl-cmd.sh
 
       cat curl-cmd.sh
 
       chmod u+x curl-cmd.sh
 
-      `./curl-cmd.sh`
+      sh ./curl-cmd.sh
+
+      echo "completed"
       
-      sleep 1000
