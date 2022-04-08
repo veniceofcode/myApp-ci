@@ -27,7 +27,7 @@ spec:
     - name: CONTEXT
       value: "continuous-integration/Tekton"
     - name: STATE
-      value: "pending"
+      value: "success"
     taskRef:
       kind: Task
       name: set-commit-status
