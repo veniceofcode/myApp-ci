@@ -307,7 +307,7 @@ spec:
   - name: git-clone-resources-cd-qa-branch
     params:
     - name: url
-      value: $(params.repo_type)/$(params.myapp-cd-git-url).git
+      value: https://$(params.repo_type)/$(params.myapp-cd-git-url).git
     - name: revision
       value: $(params.my-app-cd-git-repo-branch-qa)
     - name: verbose
