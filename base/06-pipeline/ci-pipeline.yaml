@@ -374,7 +374,7 @@ spec:
     - name: GIT_TOKEN_SECRET_KEY
       value: token
     - name: COMMIT_SHA
-      value: "123"
+      value: $(tasks.update-and-commit-kustomization-file-qa.results.commit-id)
     - name: DESCRIPTION
       value: "Pending status on commit to qa-ready"
     - name: CONTEXT
