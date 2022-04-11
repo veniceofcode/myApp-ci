@@ -18,7 +18,7 @@ spec:
       type: string
     - name: roxctl-output-format
       description : Roxctl output format - either table, json or csv
-      type: string     
+      type: string
   results:
     - name: scan-result
   steps:
@@ -54,12 +54,12 @@ spec:
 
         if [[ "$(params.recursive-search)" == "true" ]]; then
 
-          fileList=`find /files/resources/$(params.source_location)/output \
+          fileList=`find /files/$(params.source_location)/output \
           -name '*.yaml' -o -name '*.yml'`
 
         else
 
-          fileList=`ls /files/resources/$(params.source_location)/output/*.y*ml`
+          fileList=`ls /files/$(params.source_location)/output/*.y*ml`
 
         fi
 

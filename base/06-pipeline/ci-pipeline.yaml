@@ -363,7 +363,7 @@ spec:
 # Add commit status to QA branch if the resource deployment check
 # is successful
 ##------------------------------------------------------------------
-  - name: set-commit-status
+  - name: set-commit-status-qa-branch-success
     params:
     - name: GIT_REPO
       value: $(params.myapp-cd-git-url)
