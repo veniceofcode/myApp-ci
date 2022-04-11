@@ -57,19 +57,13 @@ spec:
     script: >
       #!/bin/sh
 
-      curl -H 'Content-Type: application/json' -X POST -u $GITHOSTACCESSTOKEN:x-oauth-basic -d '{"state":"$(params.STATE)", "description":"$(params.DESCRIPTION)", "context":"$(params.CONTEXT)"}' https://api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA)
+      curl -H 'Content-Type: application/json' -X POST -u $GITHOSTACCESSTOKEN:x-oauth-basic -d '{"state":"$(params.STATE)", "description":"$(params.DESCRIPTION)", "context":"$(params.CONTEXT)"}' https://api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA) > curl-cmd.sh
 
 
+      cat curl-cmd.sh
 
+      chmod u+x curl-cmd.sh
 
-
-      # echo "curl -H 'Content-Type: application/json' -X POST https://$GITHOSTACCESSTOKEN:x-oauth-basic@api.github.com/repos/$(params.GIT_REPO)/statuses/$(params.COMMIT_SHA) \ "  > curl-cmd.sh
-      # "-d '{\"state\":\"$(params.STATE)\", \"description\":\"$(params.DESCRIPTION)\", \"context\":\"$(params.CONTEXT)\"}'" >> curl-cmd.sh
-
-      # cat curl-cmd.sh
-
-      # chmod u+x curl-cmd.sh
-
-      # sh ./curl-cmd.sh
+      sh ./curl-cmd.sh
 
       echo "completed"
