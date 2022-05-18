@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- 01-pipeline/build-base-image-pipeline.yaml
+- 03-tasks/build-push-base-image.yaml
