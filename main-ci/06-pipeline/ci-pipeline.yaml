@@ -376,7 +376,7 @@ spec:
     - name: COMMIT_SHA
       value: $(tasks.update-and-commit-kustomization-file-qa.results.commit-id)
     - name: DESCRIPTION
-      value: "Pending status on commit to qa-ready"
+      value: "Success status on commit to qa-ready"
     - name: CONTEXT
       value: "continuous-integration/Tekton"
     - name: STATE
