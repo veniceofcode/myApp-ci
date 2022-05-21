@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: build-base-image-pr-
+  generateName: build-base-image-
 spec:
   pipelineRef:
     name: build-base-image

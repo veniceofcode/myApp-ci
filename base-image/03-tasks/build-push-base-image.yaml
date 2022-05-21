@@ -24,6 +24,14 @@ spec:
       description: The Buildah storage STORAGE_DRIVER
       type: string
   steps :
+    - name: ls
+      command:
+        - ls
+        - -aR
+        - .
+      image: registry.redhat.io/rhel8/buildah@sha256:6a68ece207bc5fd8db2dd5cc2d0b53136236fb5178eb5b71eebe5d07a3c33d13
+      workingDir: /files/resources
+      resources: {}
     - name: build-base-image
       command:
         - buildah
