@@ -1,12 +1,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: pi
+  name: base-image-check-and-rebuild
 spec:
-  schedule: "*/1 * * * *"
-  concurrencyPolicy: "Replace"
-  startingDeadlineSeconds: 200
-  suspend: true
+  schedule: "* * * * */10"
+  concurrencyPolicy: "forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -14,10 +12,10 @@ spec:
       template:
         metadata:
           labels:
-            parent: "cronjobpi"
+            parent: "cronjob-base-image-rebuild"
         spec:
           containers:
-          - name: pi
-            image: perl
-            command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
-          restartPolicy: OnFailure 
+          - name: oc-tekton
+            image: quay.io/marrober/devex-terminal-4:full-terminal-1.0
+            command: ["tkn",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+          restartPolicy: OnFailure

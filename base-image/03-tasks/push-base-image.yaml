@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: build-push-base-image
+  name: push-base-image
 spec:
   params:
     - name: quay-io-account
