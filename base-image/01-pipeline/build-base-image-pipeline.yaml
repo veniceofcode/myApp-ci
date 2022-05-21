@@ -126,7 +126,7 @@ spec:
       kind: Task
       name: acs-image-build-check
     runAfter:
-    - build-base-image
+    - push-base-image
 ##------------------------------------------------------------------
 # Workspace definitions
 ##------------------------------------------------------------------
