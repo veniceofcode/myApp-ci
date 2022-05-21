@@ -42,10 +42,10 @@ spec:
       workingDir: /files/resources
       resources:
         limits:
-          cpu: 4
+          cpu: '4'
           memory: 4000Mi
         requests:
-          cpu: 1
+          cpu: '1'
           memory: 1000Mi
   volumes:
     - name: quay-auth-secret
