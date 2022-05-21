@@ -7,7 +7,7 @@ spec:
     name: build-base-image
   params:
     - name: git-url
-      value: http://gogs.apps.skylake.demolab.local/mroberts/myApp-config.git
+      value: http://gogs.apps.skylake.demolab.local/mroberts/myApp-ci.git
     - name: git-revision
       value: main
     - name: quay-io-account
