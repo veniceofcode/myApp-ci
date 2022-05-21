@@ -18,7 +18,29 @@ spec:
   - name: quay-io-image-tag-name
     type: string
     default: "latest"
+  - name: acs_central_endpoint              # Advanced Cluster Security endpoint
+    type: string
+  - name: acs_api_token                     # Advanced Cluster Security access token secret
+    type: string
+  - name: roxctl-output-format              # Advanced Cluster Security image scan output format
+    type: string
   tasks:
+##------------------------------------------------------------------
+# Perform image build check - before a possible rebuild
+##------------------------------------------------------------------
+  - name: image-build-check
+    params:
+    - name: acs_central_endpoint
+      value: $(params.acs_central_endpoint)
+    - name: acs_api_token
+      value: $(params.acs_api_token)
+    - name: public-url
+      value: "quay.io/"$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
+    - name: roxctl-output-format
+      value: $(params.roxctl-output-format)
+    taskRef:
+      kind: Task
+      name: acs-image-build-check
 ##------------------------------------------------------------------
 # Git clone resources task
 ##------------------------------------------------------------------
@@ -35,6 +57,13 @@ spec:
     taskRef:
       kind: ClusterTask
       name:  git-clone
+    when:
+    - input: "$(tasks.image-build-check.results.scan-result)"
+      operator: in
+      values:
+      - "pass"
+    runAfter:
+      - image-build-check
     workspaces:
     - name: output
       workspace: files
@@ -59,6 +88,24 @@ spec:
     workspaces:
     - name: files
       workspace: files
+##------------------------------------------------------------------
+# Perform image build check - after the rebuild process
+##------------------------------------------------------------------
+  - name: image-build-check-validation
+    params:
+    - name: acs_central_endpoint
+      value: $(params.acs_central_endpoint)
+    - name: acs_api_token
+      value: $(params.acs_api_token)
+    - name: public-url
+      value: "quay.io/"$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
+    - name: roxctl-output-format
+      value: $(params.roxctl-output-format)
+    taskRef:
+      kind: Task
+      name: acs-image-build-check
+    runAfter:
+    - build-base-image
 ##------------------------------------------------------------------
 # Workspace definitions
 ##------------------------------------------------------------------
