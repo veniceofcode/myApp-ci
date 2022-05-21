@@ -35,7 +35,7 @@ spec:
     - name: acs_api_token
       value: $(params.acs_api_token)
     - name: public-url
-      value: quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
+      value: quay.io/$(params.quay-io-account)/$(params.quay-io-repository):10
     - name: roxctl-output-format
       value: $(params.roxctl-output-format)
     taskRef:
