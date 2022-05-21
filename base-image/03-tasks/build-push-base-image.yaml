@@ -34,12 +34,12 @@ spec:
         - '/files/buildah-containers'
         - '--layers'
         - '-f'
-        - /files/resources/base-image/04-dockerfile/fix-open-liberty-image
+        - base-image/04-dockerfile/fix-open-liberty-image
         - '-t'
         - quay.io/$(params.quay-io-account)/$(params.quay-io-repository):$(params.quay-io-image-tag-name)
         - .
       image: registry.redhat.io/rhel8/buildah@sha256:6a68ece207bc5fd8db2dd5cc2d0b53136236fb5178eb5b71eebe5d07a3c33d13
-      workingDir: /files/source
+      workingDir: /files/resources
       resources: {}
     - name: push-image-to-quay
       command:
