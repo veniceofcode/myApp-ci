@@ -17,5 +17,10 @@ spec:
           containers:
           - name: oc-tekton
             image: quay.io/marrober/devex-terminal-4:minimal-terminal-1.3
-            command: ["curl",  "-k", "-d", "\"{}\"", "http://base-image-github-ci-listener-myapp-ci.apps.skylake.demolab.local"]
+            command:
+            - curl
+            - -k
+            - -d
+            - "{}"
+            - http://base-image-github-ci-listener-myapp-ci.apps.skylake.demolab.local
           restartPolicy: OnFailure
