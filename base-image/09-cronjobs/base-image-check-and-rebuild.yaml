@@ -20,6 +20,7 @@ spec:
             command:
             - curl
             - -k
+            - -s
             - -d
             - "{}"
             - http://base-image-github-ci-listener-myapp-ci.apps.skylake.demolab.local
