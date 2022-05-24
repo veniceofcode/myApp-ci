@@ -31,7 +31,7 @@ spec:
         - name: quay-io-repository
           value: $(tt.params.quay-io-repository)
         - name: quay-io-image-tag-name
-          value: $(tt.params..quay-io-image-tag-name)
+          value: $(tt.params.quay-io-image-tag-name)
         - name: acs_central_endpoint
           value: $(tt.params.acs_central_endpoint)
         - name: acs_api_token
