@@ -3,8 +3,8 @@ kind: CronJob
 metadata:
   name: base-image-check-and-rebuild
 spec:
-  schedule: "* * * * */10"
-  concurrencyPolicy: "forbid"
+  schedule: "1 */12 * * *"
+  concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -16,6 +16,6 @@ spec:
         spec:
           containers:
           - name: oc-tekton
-            image: quay.io/marrober/devex-terminal-4:full-terminal-1.0
-            command: ["tkn",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+            image: quay.io/marrober/devex-terminal-4:minimal-terminal-1.3
+            command: ["curl",  "-k", "https://layers-git-layers.apps.skylake.demolab.local/"]
           restartPolicy: OnFailure
