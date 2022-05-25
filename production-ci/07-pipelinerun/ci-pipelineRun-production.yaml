@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   generateName: myapp-ci-pipeline-prod-
-  namespace: myapp-ci
+  namespace: myapp-ci-production
 spec:
 
   params:
