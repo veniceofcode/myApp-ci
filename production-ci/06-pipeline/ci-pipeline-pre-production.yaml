@@ -1,0 +1,192 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  labels:
+    pipeline.openshift.io/type: kubernetes
+  name: myapp-ci-pipeline
+  namespace: myapp-ci-production
+spec:
+  params:
+  - name: repo_type
+    type: string
+  - name: myapp-cd-git-url          # Continuous delivery git repository url
+    type: string
+  - name: my-app-cd-git-repo-name   # Continuous delivery git repository name
+    type: string
+  - name: my-app-cd-git-repo-path-to-content    # Path to the development assets in the continuous delivery git repository
+    type: string
+  - name: my-app-cd-git-repo-branch         # Branch for commit of kustomization change for QA updates
+    type: string
+  - name: my-app-cd-git-target-branch-pr
+    type: string
+  - name: my-app-cd-git-commit-comment      # Comment to be applied to the cd git commit when updating the Kustomize files
+    type: string
+  - name: my-app-cd-git-user-name           # Continuous delivery git repository update user - username
+    type: string
+  - name: my-app-cd-git-user-email          # Continuous delivery git repository update user - email
+    type: string
+  - name: acs_central_endpoint              # Advanced Cluster Security endpoint
+    type: string
+  - name: acs_api_token                     # Advanced Cluster Security access token secret
+    type: string
+  - name: roxctl-output-format              # Advanced Cluster Security image scan output format
+    type: string
+  - name: recursive-search                  # Search the subdirectories for deployment resources
+    type: string
+  - name: image                             # The container image to be deployed
+    type: string
+  tasks:
+##------------------------------------------------------------------
+# Clone the cd repository and update the kustomization file for the
+# development environment to refer to the new tagged image.
+##------------------------------------------------------------------
+  - name: update-and-commit-kustomization-file
+    params:
+    - name: GIT_URL
+      value: $(params.repo_type)/$(params.myapp-cd-git-url)
+    - name: GIT_REPO_NAME
+      value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_BRANCH
+      value: $(params.my-app-cd-git-repo-branch)
+    - name: GIT_PR_TARGET_BRANCH
+      value: $(params.my-app-cd-git-target-branch-pr)
+    - name: GIT_PATH_TO_CONTENT
+      value: $(params.my-app-cd-git-repo-path-to-content)
+    - name: GIT_USER_NAME
+      value: $(params.my-app-cd-git-user-name)
+    - name: GIT_USER_EMAIL
+      value: $(params.my-app-cd-git-user-email)
+    - name: GIT_COMMIT_COMMENT
+      value: $(params.my-app-cd-git-commit-comment)
+    - name: IMAGE
+      value: $(params.image)
+    - name: LOCATION
+      value: "pre-prod"
+    taskRef:
+      kind: Task
+      name: update-and-commit-kustomization-file
+    workspaces:
+    - name: files
+      workspace: resources
+##------------------------------------------------------------------
+# Add commit status to the branch
+##------------------------------------------------------------------
+  - name: set-commit-status-pending
+    params:
+    - name: GIT_REPO
+      value: $(params.myapp-cd-git-url)
+    - name: REPO
+      value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_TOKEN_SECRET_NAME
+      value: github-access-token
+    - name: GIT_TOKEN_SECRET_KEY
+      value: token
+    - name: COMMIT_SHA
+      value: $(tasks.update-and-commit-kustomization-file.results.commit-id)
+    - name: DESCRIPTION
+      value: "Pending status on commit to branch $(params.my-app-cd-git-repo-branch)"
+    - name: CONTEXT
+      value: "continuous-integration/Tekton"
+    - name: STATE
+      value: "pending"
+    taskRef:
+      kind: Task
+      name: set-commit-status
+    runAfter:
+      - update-and-commit-kustomization-file
+##------------------------------------------------------------------
+# Git clone deployment assets task (qa-branch)
+##------------------------------------------------------------------
+  - name: git-clone-resources-cd
+    params:
+    - name: url
+      value: https://$(params.repo_type)/$(params.myapp-cd-git-url).git
+    - name: revision
+      value: $(params.my-app-cd-git-repo-branch)
+    - name: verbose
+      value: 'false'
+    taskRef:
+      kind: ClusterTask
+      name:  git-clone
+    runAfter:
+    - set-commit-status-pending
+    workspaces:
+    - name: output
+      workspace: resources
+##------------------------------------------------------------------
+# Process kustomization file to generate deployment resources that
+# will be used on the QA branch
+##------------------------------------------------------------------
+  - name: configure-deployment-assets
+    params:
+    - name: subdirectory
+      value: $(params.my-app-cd-git-repo-path-to-content)
+    taskRef:
+      kind: Task
+      name: configure-deployment-assets
+    runAfter:
+    - git-clone-resources-cd
+    workspaces:
+    - name: files
+      workspace: resources
+##------------------------------------------------------------------
+# Perform resource deployment check on files of interest
+##------------------------------------------------------------------
+  - name: resource-deployment-check
+    params:
+    - name: acs_central_endpoint
+      value: $(params.acs_central_endpoint)
+    - name: acs_api_token
+      value: $(params.acs_api_token)
+    - name: source_location
+      value: $(params.my-app-cd-git-repo-path-to-content)
+    - name: recursive-search
+      value: $(params.recursive-search)
+    - name: roxctl-output-format
+      value: $(params.roxctl-output-format)
+    taskRef:
+      kind: Task
+      name: acs-deployment-check
+    workspaces:
+    - name: files
+      workspace: resources
+    runAfter:
+    - configure-deployment-assets
+##------------------------------------------------------------------
+# Add commit status to QA branch if the resource deployment check
+# is successful
+##------------------------------------------------------------------
+  - name: set-commit-status
+    params:
+    - name: GIT_REPO
+      value: $(params.myapp-cd-git-url)
+    - name: REPO
+      value: $(params.my-app-cd-git-repo-name)
+    - name: GIT_TOKEN_SECRET_NAME
+      value: github-access-token
+    - name: GIT_TOKEN_SECRET_KEY
+      value: token
+    - name: COMMIT_SHA
+      value: $(tasks.update-and-commit-kustomization-file.results.commit-id)
+    - name: DESCRIPTION
+      value: "Success status on commit to branch $(params.my-app-cd-git-repo-branch)"
+    - name: CONTEXT
+      value: "continuous-integration/Tekton"
+    - name: STATE
+      value: "success"
+    taskRef:
+      kind: Task
+      name: set-commit-status
+    when:
+    - input: "$(tasks.resource-deployment-check.results.scan-result)"
+      operator: in
+      values:
+      - "pass"
+    runAfter:
+      - resource-deployment-check
+##------------------------------------------------------------------
+# Workspace definition.
+##------------------------------------------------------------------
+  workspaces:
+  - name: files
+  - name: resources

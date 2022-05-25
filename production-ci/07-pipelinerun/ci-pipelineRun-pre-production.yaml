@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: myapp-ci-pipeline-pre-prod-
+  namespace: myapp-ci
+spec:
+
+  params:
+    - name: repo_type
+      value: github.com
+    - name: myapp-cd-git-url
+      value: marrober/myApp-cd
+    - name: my-app-cd-git-repo-name
+      value: myApp-cd
+    - name: my-app-cd-git-repo-path-to-content
+      value: env/03-pre-production
+    - name: my-app-cd-git-repo-branch
+      value: "pre-production-ready"
+    - name: my-app-cd-git-target-branch-pr
+      value: "pre-production"
+    - name: my-app-cd-git-commit-comment
+      value: "Update from ci process - pre-production"
+    - name: my-app-cd-git-user-name
+      value: "Mark Roberts"
+    - name: my-app-cd-git-user-email
+      value: "mroberts@redhat.com"
+    - name: acs_central_endpoint
+      value: acs-secret
+    - name: acs_api_token
+      value: acs-secret
+    - name: roxctl-output-format
+      value: "table"
+    - name: recursive-search
+      value: "true"
+    - name: image
+      value: quay.io/marrober/myapp:6322-phcb2
+  workspaces:
+  - name: resources
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
