@@ -3,7 +3,7 @@ kind: Pipeline
 metadata:
   labels:
     pipeline.openshift.io/type: kubernetes
-  name: myapp-ci-pipeline
+  name: myapp-ci-pipeline-production
   namespace: myapp-ci-production
 spec:
   params:
@@ -61,7 +61,7 @@ spec:
     - name: IMAGE
       value: $(params.image)
     - name: LOCATION
-      value: "pre-prod"
+      value: "production"
     taskRef:
       kind: Task
       name: update-and-commit-kustomization-file
