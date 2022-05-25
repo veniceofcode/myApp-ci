@@ -4,7 +4,7 @@ metadata:
   labels:
     pipeline.openshift.io/type: kubernetes
   name: myapp-ci-pipeline-production
-  namespace: myapp-ci-production
+  namespace: myapp-ci
 spec:
   params:
   - name: repo_type
