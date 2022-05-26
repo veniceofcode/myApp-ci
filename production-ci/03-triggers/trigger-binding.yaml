@@ -4,15 +4,7 @@ metadata:
   name: myapp-ci-pipeline-prod-binding
 spec:
   params:
-  - name: repository
-    value: $(body.repository)
-  - name: namespace
-    value: $(body.namespace)
-  - name: name
-    value: $(body.name)
   - name: docker_url
     value: $(body.docker_url)
-  - name: homepage
-    value: $(body.homepage)
   - name: tag
     value: $(body.updated_tags[0])

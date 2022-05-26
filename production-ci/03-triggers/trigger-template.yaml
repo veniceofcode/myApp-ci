@@ -4,11 +4,7 @@ metadata:
   name: myapp-ci-trigger-pipeline-prod-template
 spec:
   params:
-  - name: repository
-  - name: namespace
-  - name: name
   - name: docker_url
-  - name: homepage
   - name: tag
   resourcetemplates:
   - apiVersion: tekton.dev/v1beta1
