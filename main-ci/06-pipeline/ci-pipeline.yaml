@@ -253,8 +253,6 @@ spec:
         value: $(tasks.create-runtime-image.results.new-tag)
       - name: production-event-listener-route
         value: $(params.production-event-listener-route)
-      - name: STORAGE_DRIVER
-        value: $(params.STORAGE_DRIVER)
     taskRef:
       kind: Task
       name: dl-quay-webhook-trigger
