@@ -4,7 +4,8 @@ metadata:
   generateName: myapp-ci-pipeline-prod-
   namespace: myapp-ci
 spec:
-
+  pipelineRef:
+    name: myapp-ci-pipeline-production
   params:
     - name: repo_type
       value: github.com

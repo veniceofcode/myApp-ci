@@ -188,5 +188,4 @@ spec:
 # Workspace definition.
 ##------------------------------------------------------------------
   workspaces:
-  - name: files
   - name: resources
