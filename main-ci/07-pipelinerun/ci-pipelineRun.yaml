@@ -74,7 +74,7 @@ spec:
     - name: production-event-listener-route
       value: http://myapp-github-ci-prod-listener-myapp-ci.apps.skylake.demolab.local
     - name: demolab
-      value: "no"
+      value: "yes"
   workspaces:
   - name: files
     volumeClaimTemplate:
