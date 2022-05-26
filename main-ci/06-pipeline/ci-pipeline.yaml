@@ -70,6 +70,10 @@ spec:
   - name: quay-io-image-tag-name            # Quay.io repository image tag
     type: string
     default: "latest"
+  - name: production-event-listener-route   # Route for the curl command to spoof the quay webook when using demolab
+    type: string
+  - name: demolab                           # Indication of whether demolab is being used 'yes or no'
+    type: string
   tasks:
 ##------------------------------------------------------------------
 # Git clone source code task
@@ -231,6 +235,36 @@ spec:
       - "pass"
     runAfter:
       - image-build-check
+    workspaces:
+    - name: files
+      workspace: files
+##------------------------------------------------------------------
+# Pretend to the be quay.io webhook reacting to the push of the image
+# to quay by calling the route of the event listener associated with
+# the initiation of the production git cd instance update.
+##------------------------------------------------------------------
+  - name: dl-quay-webhook-trigger
+    params:
+      - name: quay-io-account
+        value: $(params.quay-io-account)
+      - name: quay-io-repository
+        value: $(params.quay-io-repository)
+      - name: tag
+        value: $(tasks.create-runtime-image.results.new-tag)
+      - name: production-event-listener-route
+        value: $(params.production-event-listener-route)
+      - name: STORAGE_DRIVER
+        value: $(params.STORAGE_DRIVER)
+    taskRef:
+      kind: Task
+      name: push-image-to-quay
+    when:
+    - input: "$(params.demolab)"
+      operator: in
+      values:
+      - "yes"
+    runAfter:
+      - push-image-to-quay
     workspaces:
     - name: files
       workspace: files

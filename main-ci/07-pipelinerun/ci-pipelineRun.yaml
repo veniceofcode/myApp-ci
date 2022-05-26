@@ -71,6 +71,10 @@ spec:
       value: "marrober"
     - name: quay-io-repository
       value: "myapp"
+    - name: production-event-listener-route
+      value: http://myapp-github-ci-prod-listener-myapp-ci.apps.skylake.demolab.local
+    - name: demolab
+      value: "no"
   workspaces:
   - name: files
     volumeClaimTemplate:

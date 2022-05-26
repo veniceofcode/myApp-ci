@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- 06-pipeline/ci-pipeline-production.yaml
-- 08-triggers/event-listener.yaml
-- 08-triggers/event-listener-route.yaml
-- 08-triggers/trigger-binding.yaml
-- 08-triggers/trigger-template.yaml
+- 01-pipeline/ci-pipeline-production.yaml
+- 03-triggers/event-listener.yaml
+- 03-triggers/event-listener-route.yaml
+- 03-triggers/trigger-binding.yaml
+- 03-triggers/trigger-template.yaml

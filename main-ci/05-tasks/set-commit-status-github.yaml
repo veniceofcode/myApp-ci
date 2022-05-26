@@ -25,7 +25,7 @@ spec:
     type: string
   steps:
   - name: show-params
-    script: >
+    script: >-
       #!/bin/sh
 
       echo "Git_REPO : " $(params.GIT_REPO)

@@ -18,9 +18,9 @@ resources:
 - 05-tasks/acs-deployment-check.yaml
 - 05-tasks/configure-deployment-assets.yaml
 - 05-tasks/set-commit-status-github.yaml
+- 05-tasks/dl-quay-webhook-trigger.yaml
 - 06-pipeline/ci-pipeline.yaml
 - 08-triggers/event-listener.yaml
 - 08-triggers/event-listener-route.yaml
 - 08-triggers/trigger-binding.yaml
 - 08-triggers/trigger-template.yaml
-
