@@ -257,7 +257,7 @@ spec:
         value: $(params.STORAGE_DRIVER)
     taskRef:
       kind: Task
-      name: push-image-to-quay
+      name: dl-quay-webhook-trigger
     when:
     - input: "$(params.demolab)"
       operator: in
