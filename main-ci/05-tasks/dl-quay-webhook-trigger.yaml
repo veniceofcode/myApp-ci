@@ -20,7 +20,7 @@ spec:
 
         set +x
 
-        echo "{\"repository\": \"$(params.quay-io-account)/$(params.quay-io-repository)\", \"docker_url\": \"$(params.quay-io-account)/$(params.quay-io-repository)\", \"updated_tags\": [\"$(params.tag)\"]}" $(params.production-event-listener-route)
+        echo "{\"repository\": \"$(params.quay-io-account)/$(params.quay-io-repository)\", \"docker_url\": \"quay.io/$(params.quay-io-account)/$(params.quay-io-repository)\", \"updated_tags\": [\"$(params.tag)\"]}" $(params.production-event-listener-route)
 
         curl -k -s -d "{\"repository\": \"$(params.quay-io-account)/$(params.quay-io-repository)\", \"docker_url\": \"$(params.quay-io-account)/$(params.quay-io-repository)\", \"updated_tags\": [\"$(params.tag)\"]}" $(params.production-event-listener-route)
 
