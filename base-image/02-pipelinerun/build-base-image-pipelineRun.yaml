@@ -7,11 +7,11 @@ spec:
     name: build-base-image
   params:
     - name: git-url
-      value: https://github.com/marrober/myApp-ci.git
+      value: https://github.com/veniceofcode/myApp-ci.git
     - name: git-revision
       value: main
     - name: quay-io-account
-      value: "marrober"
+      value: "rbrhssa"
     - name: quay-io-repository
       value: "openliberty"
     - name: quay-io-image-tag-name

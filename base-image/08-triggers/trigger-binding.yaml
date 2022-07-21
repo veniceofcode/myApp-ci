@@ -5,11 +5,11 @@ metadata:
 spec:
   params:
   - name: gitrepository.url
-    value: https://github.com/marrober/myApp-ci.git
+    value: https://github.com/veniceofcode/myApp-ci.git
   - name: gitrevision
     value: main
   - name: quay-io-account
-    value: "marrober"
+    value: "rbrhssa"
   - name: quay-io-repository
     value: "openliberty"
   - name: quay-io-image-tag-name

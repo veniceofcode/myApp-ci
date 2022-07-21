@@ -44,7 +44,7 @@ spec:
         - name: repo_type
           value: github.com
         - name: myapp-cd-git-url 
-          value: marrober/myApp-cd
+          value: veniceofcode/myApp-cd
         - name: my-app-cd-git-repo-name
           value: myApp-cd
         - name: my-app-cd-git-repo-path-to-content-development
@@ -72,7 +72,7 @@ spec:
         - name: recursive-search
           value: "true"
         - name: quay-io-account
-          value: "marrober"
+          value: "rbrhssa"
         - name: quay-io-repository
           value: "myapp"          
         - name: source-git-url
