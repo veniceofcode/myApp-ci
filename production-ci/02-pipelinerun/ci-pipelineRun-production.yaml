@@ -22,9 +22,9 @@ spec:
     - name: my-app-cd-git-commit-comment
       value: "Update from ci process - production"
     - name: my-app-cd-git-user-name
-      value: "Mark Roberts"
+      value: "Raghuram Banda"
     - name: my-app-cd-git-user-email
-      value: "mroberts@redhat.com"
+      value: "rbanda@redhat.com"
     - name: acs_central_endpoint
       value: acs-secret
     - name: acs_api_token

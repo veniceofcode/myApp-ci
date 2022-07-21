@@ -56,9 +56,9 @@ spec:
     - name: my-app-cd-git-commit-comment-qa
       value: "Update from ci process - qa"
     - name: my-app-cd-git-user-name
-      value: "Mark Roberts"
+      value: "Raghuram Banda"
     - name: my-app-cd-git-user-email
-      value: "mroberts@redhat.com"
+      value: "rbanda@redhat.com"
     - name: acs_central_endpoint
       value: acs-secret
     - name: acs_api_token
@@ -74,7 +74,7 @@ spec:
     - name: production-event-listener-route
       value: http://myapp-github-ci-prod-listener-myapp-ci.apps.skylake.demolab.local
     - name: demolab
-      value: "yes"
+      value: "no"
   workspaces:
   - name: files
     volumeClaimTemplate:
