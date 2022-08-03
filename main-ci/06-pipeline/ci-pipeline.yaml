@@ -70,6 +70,8 @@ spec:
   - name: quay-io-image-tag-name            # Quay.io repository image tag
     type: string
     default: "latest"
+  - default: >-
+      http://myapp-github-ci-prod-listener-myapp-ci.apps.cluster-54m5x.54m5x.sandbox472.opentlc.com
   - name: production-event-listener-route   # Route for the curl command to spoof the quay webook when using demolab
     type: string
   - default: 'no'
