@@ -72,6 +72,7 @@ spec:
     default: "latest"
   - name: production-event-listener-route   # Route for the curl command to spoof the quay webook when using demolab
     type: string
+  - default: 'no'
   - name: demolab                           # Indication of whether demolab is being used 'yes or no'
     type: string
   tasks:
