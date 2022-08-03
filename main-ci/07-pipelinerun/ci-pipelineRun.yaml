@@ -74,7 +74,7 @@ spec:
     - name: production-event-listener-route
       value: "http://myapp-github-ci-prod-listener-myapp-ci.apps.cluster-54m5x.54m5x.sandbox472.opentlc.com"
     - name: demolab
-      value: "no"
+      value: 'no'
   workspaces:
   - name: files
     volumeClaimTemplate:
