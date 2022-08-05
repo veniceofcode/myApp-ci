@@ -262,7 +262,7 @@ spec:
     - input: "$(params.demolab)"
       operator: in
       values:
-      - "yes"
+      - "no"
     runAfter:
       - push-image-to-quay
     workspaces:
