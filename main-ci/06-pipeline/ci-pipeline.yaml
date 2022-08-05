@@ -258,11 +258,6 @@ spec:
     taskRef:
       kind: Task
       name: dl-quay-webhook-trigger
-    when:
-    - input: "$(params.demolab)"
-      operator: in
-      values:
-      - "no"
     runAfter:
       - push-image-to-quay
     workspaces:
